@@ -1,0 +1,21 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.ArticleViewModel
+
+<div class="item border" onclick="window.open('@Model.Link','_blank');">
+    <div class="item-image center border-bottom">
+        Image
+    </div>
+    <div>
+        <div class="item-info border-bottom">
+            <div class="item-date">
+                <p>@Model.PublicationTime</p>
+            </div>
+            <div class="item-source">
+                <p>@Model.SourceName</p>
+            </div>
+        </div>
+        <div class="item-description">
+            <h3>@Model.Title</h3>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/Site.css" type="text/css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+</head>
+<body>
+    <div class="top">
+        <ul class="navbar theme top left-align large">
+            <li class="opennav right hide-large">
+                <a class="hover-white large theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+            </li>
+            <li><a href="#" class="theme-l1">Rss Reader</a></li>
+            <li class="hide-small"><a href="#" class="hover-white">About</a></li>
+        </ul>
+    </div>
+
+@{ Html.RenderAction("Menu", "Nav"); }
+    
+<div class="main">
+    @RenderBody()
+</div>
+
+<script>
+    var mySidenav = document.getElementById("mySidenav");
+
+    var overlayBg = document.getElementById("myOverlay");
+
+    function w3_open() {
+        if (mySidenav.style.display === 'block') {
+            mySidenav.style.display = 'none';
+            overlayBg.style.display = "none";
+        } else {
+            mySidenav.style.display = 'block';
+            overlayBg.style.display = "block";
+        }
+    }
+
+    function w3_close() {
+        mySidenav.style.display = "none";
+        overlayBg.style.display = "none";
+    }
+</script>
+
+</body>
+</html>

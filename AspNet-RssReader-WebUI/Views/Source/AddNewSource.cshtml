@@ -1,0 +1,16 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.AddSourceViewModel
+@{
+    ViewBag.Title = "AddNewSource";
+}
+
+<div class="editor full-width">
+    <h3>Add new source</h3>
+    @using (Html.BeginForm())
+    {
+        <div>Source name @Html.TextBoxFor(x=> x.Name, new { @class = "button full-width" })</div>
+        <div>Rss channel link @Html.TextBoxFor(x => x.Link, new { @class = "button full-width" })</div>
+        <p>
+            <input type="submit" value="Add" class="button full-width blur"/>
+        </p>
+    }
+</div>

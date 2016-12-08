@@ -1,0 +1,416 @@
+﻿*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+     -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+}
+
+html, body {
+    font-family: Verdana,sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+nav {
+    display: block;
+}
+
+a {
+    background-color: transparent;
+    color: inherit;
+}
+
+a:active, a:hover {
+    outline-width: 0;
+}
+
+h1, h4 {
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
+h1 {
+    font-size: 36px;
+    margin: 0 !important;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+.theme-l5 {
+    color: #000 !important;
+    background-color: #f0f0f0 !important;
+}
+
+.theme-l1 {
+    color: #fff !important;
+    background-color: #333333 !important;
+}
+
+.theme {
+    color: #fff !important;
+    background-color: #000000 !important;
+}
+
+.opennav {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.navbar li {
+    float: left;
+}
+
+.navbar li a {
+    display: block;
+    padding: 8px 16px;
+}
+
+.navbar li a:hover {
+    color: #000;
+    background-color: #ccc;
+}
+
+.navbar a, .sidenav a {
+    text-decoration: none !important;
+}
+
+.navbar .opennav.right {
+    float: right !important;
+}
+
+.opennav {
+    color: inherit;
+}
+
+.opennav:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.navbar a, .sidenav a, .pagination li a {
+    -webkit-transition: background-color .3s,color .15s,box-shadow .3s,opacity 0.3s,filter 0.3s;
+    transition: background-color .3s,color .15s,box-shadow .3s,opacity 0.3s,filter 0.3s;
+}
+
+.sidenav {
+    height: 100%;
+    width: 200px;
+    background-color: #fff;
+    position: fixed !important;
+    z-index: 1;
+    overflow: auto;
+}
+
+.sidenav a {
+    padding: 4px 2px 4px 16px;
+    display: block;
+}
+
+.sidenav a:hover {
+    background-color: #ccc;
+}
+
+.main {
+    transition: margin-left .4s;
+    padding-right: 90px;
+    padding-left: 350px;
+    padding-top: 80px;
+    padding-bottom: 20px;
+    float: left;
+    width: 100%;
+}
+
+@media screen and (max-width:600px) {
+    .navbar li:not(.opennav) {
+        float: none;
+        width: 100% !important;
+    }
+
+    .navbar li.right {
+        float: none !important;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .navbar {
+        text-align: center;
+    }
+}
+
+@media (max-width:600px) {
+    .hide-small {
+        display: none !important;
+    }
+}
+
+@media (max-width:992px) and (min-width:601px) {
+    .hide-medium {
+        display: none !important;
+    }
+}
+
+@media (min-width:993px) {
+    .hide-large {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width:992px) {
+    .sidenav.collapse {
+        display: none;
+    }
+
+    .main {
+        padding-left: 90px !important;
+    }
+}
+
+@media screen and (min-width:993px) {
+    .sidenav.collapse {
+        display: block !important;
+    }
+}
+
+.top {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
+
+.top {
+    top: 0;
+}
+
+.overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+}
+
+.right {
+    float: right !important;
+}
+
+.large {
+    font-size: 18px !important;
+}
+
+.xlarge {
+    font-size: 24px !important;
+}
+
+.left-align {
+    text-align: left !important;
+}
+
+.justify {
+    text-align: justify !important;
+}
+
+.center {
+    text-align: center !important;
+}
+
+.border {
+    border: 1px solid #ccc !important;
+    border-radius: 10px;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #ccc !important;
+}
+
+.padding-large {
+    padding: 12px 24px !important;
+}
+
+.animate-left {
+    position: relative;
+    -webkit-animation: animateleft 0.4s;
+    animation: animateleft 0.4s;
+}
+
+@-webkit-keyframes animateleft {
+    from {
+        left: -300px;
+        opacity: 0;
+    }
+
+    to {
+        left: 0;
+        opacity: 1;
+    }
+}
+
+@keyframes animateleft {
+    from {
+        left: -300px;
+        opacity: 0;
+    }
+
+    to {
+        left: 0;
+        opacity: 1;
+    }
+}
+
+.item {
+    float: left;
+    width: 300px;
+    margin: 10px;
+}
+
+.read {
+    color: #ccc !important;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.blur:hover {
+    -webkit-filter: blur(0.8px);
+    filter: blur(0.8px);
+    cursor: pointer;
+}
+
+.button {
+    background-color: #ffffff;
+    padding: 16px 32px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc !important;
+    border-radius: 10px;
+    font-size: 15px;
+    line-height: normal;
+    text-decoration: none;
+    text-align: center;
+    display: inline-block;
+}
+
+.feed-button {
+    width: 300px;
+    margin: 10px;
+    float: left; 
+}
+
+.feed-buttons {
+    overflow: hidden;
+}
+
+.sorting-dropdown {
+    padding: 16px 0;
+}
+
+.sorting-dropdown-content {
+    display: none;
+    position: absolute;
+}
+
+.sorting-dropdown-content a {
+    display: block;
+    float: none;
+    margin: 16px 0;
+}
+
+.sorting-dropdown-content a:first-child {
+    margin-top: 32px; 
+}
+
+.sorting-dropdown:hover .sorting-dropdown-content {
+    display: block;
+}
+
+.item-image {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.item-image img {
+    width: 298px !important;
+    height: 200px !important;
+    border-radius: 10px 10px 0 0;
+    display: block;
+}
+
+.item-info p {
+    margin: 10px;
+    font-size: 14px;
+}
+
+.item-description {
+    height: 142px;
+    overflow: hidden;
+}
+
+.item-description h3, .item-description p{
+    margin: 10px;
+}
+
+.item-description p {
+    font-size: 13px;
+    text-align: justify;
+}
+
+.item-description h3 {
+    font-size: 13px;
+    height: 40px;
+    overflow: hidden;
+}
+
+.item-date {
+    display: inline-block;
+}
+
+.item-source {
+    display: inline-block;
+    float: right;
+}
+
+html,body,h1,h2,h3,h4,h5,h6 {
+    font-family: "Roboto", sans-serif
+}
+
+.sidenav a,.sidenav h4 {
+    padding: 12px;
+}
+
+.navbar li a {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.active {
+    background-color: #ccc;
+}
+
+

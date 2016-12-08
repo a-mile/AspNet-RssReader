@@ -1,0 +1,9 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.ArticleContentViewModel
+
+@{
+    ViewBag.Title = "Article";
+}
+
+<h2>@Model.Title</h2>
+@Html.Raw(Model.Content)
+

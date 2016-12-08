@@ -1,0 +1,17 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.DeleteSourceViewModel
+
+@{
+    ViewBag.Title = "Delete source";
+}
+
+<div class="editor full-width">
+    <h2>Delete source</h2>
+    <p>Are you sure do you want to delete @Model.Name ?</p>
+    @Html.ActionLink("Yes", "DeleteConfirmed", "Source",
+        new { sourceId = Model.SourceId },
+        new { @class = "button full-width" })
+    @Html.ActionLink("No", "EditSource", "Source",
+        new { sourceId = Model.SourceId },
+        new { @class = "button full-width" })
+</div>
+

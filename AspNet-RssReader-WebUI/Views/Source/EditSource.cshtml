@@ -1,0 +1,20 @@
+﻿@using AspNet_RssReader_WebUI.ViewModels
+@model EditSourceViewModel
+
+@{
+    ViewBag.Title = "EditSource";
+}
+
+<div class="editor full-width">
+    <h2>Edit source</h2>
+    @using (Html.BeginForm())
+    {
+        <div>Source name @Html.TextBoxFor(x => x.Name, new { @class = "button full-width" })</div>
+        <div>Rss channel link @Html.TextBoxFor(x => x.Link, new { @class = "button full-width" })</div>
+        <p>
+            <input type="submit" value="Update" class="button full-width blur"/>
+            @Html.ActionLink("Delete", "DeleteSource", "Source", new { sourceId = Model.SourceId }, new {@class= "button full-width blur" })
+        </p>
+    }
+</div>
+

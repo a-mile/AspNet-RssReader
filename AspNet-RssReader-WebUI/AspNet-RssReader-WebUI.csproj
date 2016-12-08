@@ -181,7 +181,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AddSourceViewModel.cs" />
-    <Compile Include="ViewModels\ArticleContentViewModel.cs" />
     <Compile Include="ViewModels\ArticlesListViewModel.cs" />
     <Compile Include="ViewModels\ArticleViewModel.cs" />
     <Compile Include="ViewModels\DeleteSourceViewModel.cs" />

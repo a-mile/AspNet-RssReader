@@ -9,9 +9,9 @@
     <p>Are you sure do you want to delete @Model.Name ?</p>
     @Html.ActionLink("Yes", "DeleteConfirmed", "Source",
         new { sourceId = Model.SourceId },
-        new { @class = "button full-width" })
+        new { @class = "button full-width blur" })
     @Html.ActionLink("No", "EditSource", "Source",
         new { sourceId = Model.SourceId },
-        new { @class = "button full-width" })
+        new { @class = "button full-width blur" })
 </div>
 

@@ -13,8 +13,8 @@ namespace AspNet_RssReader_Domain.Entities
         public bool Read { get; set; }
         public DateTime PubDate { get; set; }
         public string ImageUrl { get; set; }
-        public int SourceId { get; set; }
         public string Author { get; set; }
+        public int SourceId { get; set; }
         public virtual Source Source { get; set; }
     }
 }

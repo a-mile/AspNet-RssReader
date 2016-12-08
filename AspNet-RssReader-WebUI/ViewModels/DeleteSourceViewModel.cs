@@ -1,4 +1,6 @@
-﻿namespace AspNet_RssReader_WebUI.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AspNet_RssReader_WebUI.ViewModels
 {
     public class DeleteSourceViewModel
     {

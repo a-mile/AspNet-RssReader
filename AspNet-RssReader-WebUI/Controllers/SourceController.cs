@@ -21,6 +21,11 @@ namespace AspNet_RssReader_WebUI.Controllers
         [HttpPost]
         public ActionResult AddNewSource(AddSourceViewModel addSource)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(addSource);
+            }
+
             Source source = new Source
             {
                 Name = addSource.Name,
@@ -50,6 +55,11 @@ namespace AspNet_RssReader_WebUI.Controllers
         [HttpPost]
         public ActionResult EditSource(EditSourceViewModel editSource)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(editSource);
+            }
+
             Source source = _unitOfWork.Repository<Source>().GetById(editSource.SourceId);
             source.Name = editSource.Name;
             source.Link = editSource.Link;

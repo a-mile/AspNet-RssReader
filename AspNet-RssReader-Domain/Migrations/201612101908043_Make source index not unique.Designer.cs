@@ -7,13 +7,13 @@ namespace AspNet_RssReader_Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Addarticleauthor : IMigrationMetadata
+    public sealed partial class Makesourceindexnotunique : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Addarticleauthor));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Makesourceindexnotunique));
         
         string IMigrationMetadata.Id
         {
-            get { return "201612051117038_Add article author"; }
+            get { return "201612101908043_Make source index not unique"; }
         }
         
         string IMigrationMetadata.Source

@@ -6,18 +6,17 @@
     </a>
     <h4><b>Menu</b></h4>
     @Html.ActionLink("Add new source", "AddNewSource", "Source",null, new {@class = "hover-black" })
-    @(Model.CurrentSourceId == null ? Html.ActionLink("All", "List", "Article", null, new {@class = "hover-black active"}) : Html.ActionLink("All", "List", "Article", null, new {@class = "hover-black"}))
+    @(Model.CurrentSourceName == null ? Html.ActionLink("All", "List", "Article", null, new {@class = "hover-black active"}) : Html.ActionLink("All", "List", "Article", null, new {@class = "hover-black"}))
     @foreach (var source in Model.Sources)
     {
-        if (source.Id == Model.CurrentSourceId)
+        if (source.Name == Model.CurrentSourceName)
         {
            @Html.RouteLink(source.Name,
             new
             {
                 controller = "Article",
                 action = "List",
-                sourceId = source.Id,
-                page = 1
+                sourceName = source.Name
             },
             new
             {
@@ -31,8 +30,7 @@
             {
                 controller = "Article",
                 action = "List",
-                sourceId = source.Id,
-                page = 1
+                sourceName = source.Name
             },
             new
             {

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using AspNet_RssReader_Domain.Abstract;
 using Newtonsoft.Json.Linq;
@@ -30,9 +31,19 @@ namespace AspNet_RssReader_Domain.Concrete
             StreamReader streamReader = new StreamReader(responseStream);
             string responseString = streamReader.ReadToEnd();
 
-            JToken token = JObject.Parse(responseString);
+            try
+            {
+                JToken token = JObject.Parse(responseString);
+                var currentToken = token.SelectToken(tokenName);
 
-            return token.SelectToken(tokenName).ToString();
+                if (currentToken != null)
+                    return currentToken.ToString();
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
+            return string.Empty;
         }
     }
 }

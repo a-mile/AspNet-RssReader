@@ -48,11 +48,9 @@ namespace AspNet_RssReader_WebUI.Controllers
             {
                 return RedirectToLocal(returnUrl);
             }
-            else
-            {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(model);
-            }
+
+            ModelState.AddModelError("", "Invalid login attempt.");
+            return View(model);
         }
 
         private ActionResult RedirectToLocal(string returnUrl)
@@ -61,10 +59,8 @@ namespace AspNet_RssReader_WebUI.Controllers
             {
                 return Redirect(returnUrl);
             }
-            else
-            {
-                return RedirectToAction("List", "Article");
-            }
+
+            return RedirectToAction("List", "Article");
         }
 
         [AllowAnonymous]

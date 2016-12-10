@@ -32,6 +32,11 @@ namespace AspNet_RssReader_Domain.Concrete
             return _dbSet.Find(id);
         }
 
+        public T GetByStringId(string id)
+        {
+            return _dbSet.Find(id);
+        }
+
         public void Add(T entity)
         {
             _dbSet.Add(entity);

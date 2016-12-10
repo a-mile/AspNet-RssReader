@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Routing;
 using AspNet_RssReader_Domain.Abstract;
@@ -24,7 +25,8 @@ namespace AspNet_RssReader_WebUI.Infrastructure
             _ninjectKernel.Bind<IArticleDownloader>().To<XmlArticleDownloader>();
             _ninjectKernel.Bind<IArticleExtractor>().To<MercuryArticleExtractor>();
             _ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
-            
+            _ninjectKernel.Bind<DbContext>().To<ApplicationDbContext>();
+
         }
     }
 }

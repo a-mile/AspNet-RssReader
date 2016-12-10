@@ -176,7 +176,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="HtmlHelpers\PagingHelpers.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -184,9 +183,7 @@
     <Compile Include="ViewModels\ArticlesListViewModel.cs" />
     <Compile Include="ViewModels\ArticleViewModel.cs" />
     <Compile Include="ViewModels\DeleteSourceViewModel.cs" />
-    <Compile Include="ViewModels\EditSourceViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\PagingInfoViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\SourcesListViewModel.cs" />
   </ItemGroup>
@@ -223,9 +220,7 @@
     <Content Include="Views\Shared\ArticleSummary.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
     <Content Include="Views\Source\AddNewSource.cshtml" />
-    <Content Include="Views\Source\EditSource.cshtml" />
     <Content Include="Views\Source\DeleteSource.cshtml" />
-    <Content Include="Views\Article\Article.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>

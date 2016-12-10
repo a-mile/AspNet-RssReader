@@ -1,47 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 using AspNet_RssReader_Domain.Abstract;
 using AspNet_RssReader_Domain.Entities;
 using AspNet_RssReader_WebUI.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
     public class ArticleController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly DbContext _dbContext;
         private readonly IArticleDownloader _articleDownloader;
-        private readonly IArticleExtractor _articleExtractor;
+        private readonly IArticleExtractor _articleExtractor;      
         private readonly int _pageSize = 9;
 
-        public ArticleController(IUnitOfWork unitOfWork, IArticleDownloader articleDownloader, IArticleExtractor articleExtractor)
+        public ArticleController(DbContext dbContext, IArticleDownloader articleDownloader,
+            IArticleExtractor articleExtractor)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
             _articleDownloader = articleDownloader;
-            _articleExtractor = articleExtractor;
+            _articleExtractor = articleExtractor;            
         }
 
-        public ViewResult List(int? sourceId, string sortingBy = "PubDate", string sortingOrder = "Desc")
+        public ViewResult List(string sourceName = null, string sortingBy = "PubDate", string sortingOrder = "Desc")
         {
-            if (sourceId == null)
-            {
-                foreach (var source in _unitOfWork.Repository<Source>().SelectAll().ToList())
+            string userId = User.Identity.GetUserId();
+
+            if (sourceName == null)
+            {                
+                var userSources =
+                    _dbContext.Set<Source>().Where(x => x.ApplicationUserId == userId).ToList();
+
+                foreach (var source in userSources)
                 {
                     SynchronizeArticles(source);
                 }
             }
             else
             {
-                Source source = _unitOfWork.Repository<Source>().GetById(sourceId.Value);
+                Source source =
+                    _dbContext
+                        .Set<Source>()
+                        .FirstOrDefault(x => x.ApplicationUserId == userId && x.Name == sourceName);
+
+                if (source == null)
+                    return View("Error");
+
                 SynchronizeArticles(source);
             }
 
-            _unitOfWork.Save();
+            _dbContext.SaveChanges();
 
             ArticlesListViewModel articlesListViewModel = new ArticlesListViewModel
             {
-                SourceId = sourceId,
+                SourceName = sourceName,
                 SortingBy = sortingBy,
                 SortingOrder = sortingOrder
             };
@@ -60,7 +75,10 @@ namespace AspNet_RssReader_WebUI.Controllers
                     if (source.Articles.Count(x => x.Link == newArticle.Link) == 0)
                     {
                         newArticle.ImageUrl = _articleExtractor.GetArticleLeadImageUrl(newArticle.Link);
-                        source.Articles.Add(newArticle);
+                        newArticle.SourceId = source.Id;
+                        newArticle.ApplicationUserId = User.Identity.GetUserId();
+
+                        _dbContext.Set<Article>().Add(newArticle);
                     }
                 }
 
@@ -74,10 +92,8 @@ namespace AspNet_RssReader_WebUI.Controllers
 
                 foreach (var article in articlesToDelete)
                 {
-                    _unitOfWork.Repository<Article>().Delete(article);
+                    _dbContext.Entry(article).State = EntityState.Deleted;
                 }
-
-                _unitOfWork.Repository<Source>().Update(source);
             }
         }
 
@@ -106,14 +122,18 @@ namespace AspNet_RssReader_WebUI.Controllers
             return "Just now";
         }
 
-        public JsonResult GetArticles(int? sourceId, string sortingBy, string sortingOrder, int page = 1)
+        public JsonResult GetArticles(string sourceName, string sortingBy, string sortingOrder, int page)
         {
+            string userId = User.Identity.GetUserId();
             IEnumerable<Article> articles;
+
+            if (sourceName == string.Empty)
+                sourceName = null;
 
             if (sortingOrder == "Asc")
             {
-                articles = _unitOfWork.Repository<Article>()
-                    .SelectAll(x => sourceId == null || x.Source.Id == sourceId)
+                articles = _dbContext.Set<Article>()
+                    .Where(x => (sourceName == null || x.Source.Name == sourceName) && x.ApplicationUserId == userId).ToList()
                     .OrderBy(x => x.Read)
                     .ThenBy(x => GetArticlePropertyByName(x, sortingBy))
                     .Skip((page - 1)*_pageSize)
@@ -121,8 +141,8 @@ namespace AspNet_RssReader_WebUI.Controllers
             }
             else
             {
-                articles = _unitOfWork.Repository<Article>()
-                    .SelectAll(x => sourceId == null || x.Source.Id == sourceId)
+                articles = _dbContext.Set<Article>()
+                    .Where(x => (sourceName == null || x.Source.Name == sourceName) && x.ApplicationUserId == userId).ToList()
                     .OrderBy(x => x.Read)
                     .ThenByDescending(x => GetArticlePropertyByName(x, sortingBy))
                     .Skip((page - 1)*_pageSize)
@@ -156,24 +176,26 @@ namespace AspNet_RssReader_WebUI.Controllers
             return article.GetType().GetProperty(propertyName).GetValue(article, null);
         }
 
-        public ActionResult MarkAllAsRead(int? sourceId)
+        public ActionResult MarkAllAsRead(string sourceName = null)
         {
-            if (sourceId == null)
-            {
-                foreach (var source in _unitOfWork.Repository<Source>().SelectAll().ToList())
-                {
-                    MarkArticlesAsRead(source.Articles);
-                }
+            string userId = User.Identity.GetUserId();
+
+            var userArticles = _dbContext.Set<Article>()
+                    .Where(x => x.ApplicationUserId == userId);
+
+            if (sourceName == null)
+            {              
+                MarkArticlesAsRead(userArticles);
             }
             else
             {
-                Source source = _unitOfWork.Repository<Source>().GetById(sourceId.Value);
-                MarkArticlesAsRead(source.Articles);
+                var sourceArticles = userArticles.Where(x => x.Source.Name == sourceName);
+                MarkArticlesAsRead(sourceArticles);
             }
-            
-            _unitOfWork.Save();
 
-            return RedirectToAction("List", new {sourceId = sourceId, page = 1});
+            _dbContext.SaveChanges();
+
+            return RedirectToAction("List", new {sourceName = sourceName});
         }
 
         private void MarkArticlesAsRead(IEnumerable<Article> articles)
@@ -181,21 +203,21 @@ namespace AspNet_RssReader_WebUI.Controllers
             foreach (var article in articles)
             {
                 article.Read = true;
-                _unitOfWork.Repository<Article>().Update(article);
+                _dbContext.Entry(article).State = EntityState.Modified;
             }
         }
 
         public string MarkArticleAsRead(int articleId)
         {
-            Article article = _unitOfWork.Repository<Article>().GetById(articleId);
+            Article article = _dbContext.Set<Article>().Find(articleId);
 
             if (article != null)
             {
                 article.Read = true;
             }
 
-            _unitOfWork.Repository<Article>().Update(article);
-            _unitOfWork.Save();
+            _dbContext.Entry(article).State = EntityState.Modified;
+            _dbContext.SaveChanges();
 
             return "Success";
         }

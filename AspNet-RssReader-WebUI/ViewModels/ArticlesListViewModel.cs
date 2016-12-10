@@ -2,7 +2,7 @@
 {
     public class ArticlesListViewModel
     {
-        public int? SourceId { get; set; }
+        public string SourceName { get; set; }
         public string SortingBy { get; set; }
         public string SortingOrder { get; set; }
     }

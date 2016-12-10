@@ -8,6 +8,7 @@ namespace AspNet_RssReader_Domain.Abstract
     {
         IEnumerable<T> SelectAll(Expression<Func<T, bool>> predicate = null);
         T GetById(int id);
+        T GetByStringId(string id);
         void Add(T entity);
         void Update(T entity);
         T Delete(int id);

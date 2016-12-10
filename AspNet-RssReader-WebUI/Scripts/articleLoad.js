@@ -13,14 +13,14 @@ $(document).ready(function () {
 });
 
 function GetArticles() {
-    var sourceId = $('#sourceId').val();
+    var sourceName = $('#sourceName').val();
     var sortingBy = $('#sortingBy').val();
     var sortingOrder = $('#sortingOrder').val();
 
     $.ajax({
         type: 'GET',
         url: '/Article/GetArticles',
-        data: { "sourceId": sourceId, "page": pageIndex, "sortingBy":sortingBy, "sortingOrder": sortingOrder },
+        data: { "sourceName": sourceName, "page": pageIndex, "sortingBy":sortingBy, "sortingOrder": sortingOrder },
         dataType: 'json',
         success: function (data) {
             if (data != null) {

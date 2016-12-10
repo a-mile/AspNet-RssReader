@@ -7,11 +7,19 @@
 <div class="editor full-width">
     <h2>Delete source</h2>
     <p>Are you sure do you want to delete @Model.Name ?</p>
-    @Html.ActionLink("Yes", "DeleteConfirmed", "Source",
-        new { sourceId = Model.SourceId },
-        new { @class = "button full-width blur" })
-    @Html.ActionLink("No", "EditSource", "Source",
-        new { sourceId = Model.SourceId },
+    @using (Html.BeginForm("DeleteSource", "Source", FormMethod.Post, new { role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.EditorFor(x=>x.Name)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Yes" class="button full-width blur" />
+            </div>
+        </div>
+    }
+ 
+    @Html.ActionLink("No", "List", "Article",
+        new { sourceName = Model.Name },
         new { @class = "button full-width blur" })
 </div>
 

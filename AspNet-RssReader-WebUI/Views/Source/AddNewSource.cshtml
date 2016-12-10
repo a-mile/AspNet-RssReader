@@ -7,6 +7,7 @@
     <h3>Add new source</h3>
     @using (Html.BeginForm("AddNewSource", "Source", FormMethod.Post, new { role = "form" }))
     {
+        @Html.AntiForgeryToken()
         <div class="form-group">
             @Html.LabelFor(m => m.Name)
             <div class="col-md-10">

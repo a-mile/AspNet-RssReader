@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace AspNet_RssReader_Domain.Entities
 {
-    public class Source
+    public class Category
     {
-        public Source()
+        public Category()
         {
-            Articles = new HashSet<Article>();
+            Sources = new HashSet<Source>();
         }
 
         [Key]
@@ -17,16 +21,9 @@ namespace AspNet_RssReader_Domain.Entities
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
 
-        [ForeignKey("Category")]
-        public int? CategoryId { get; set; }
-
-        [Index]
-        [MaxLength(56)]
         public string Name { get; set; }
-        public string Link { get; set; }
 
-        public virtual ICollection<Article> Articles { get; set; }
+        public virtual ICollection<Source> Sources { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
-        public virtual Category Category { get; set; }
     }
 }

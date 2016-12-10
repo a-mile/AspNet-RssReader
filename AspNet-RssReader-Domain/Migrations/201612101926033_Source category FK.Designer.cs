@@ -7,13 +7,13 @@ namespace AspNet_RssReader_Domain.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Intial : IMigrationMetadata
+    public sealed partial class SourcecategoryFK : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Intial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(SourcecategoryFK));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610031359457_Intial"; }
+            get { return "201612101926033_Source category FK"; }
         }
         
         string IMigrationMetadata.Source

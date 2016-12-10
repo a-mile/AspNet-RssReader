@@ -1,24 +1,28 @@
-﻿using System.Web.Mvc;
-using AspNet_RssReader_Domain.Abstract;
+﻿using System.Data.Entity;
+using System.Linq;
+using System.Web.Mvc;
 using AspNet_RssReader_Domain.Entities;
 using AspNet_RssReader_WebUI.ViewModels;
+using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
     public class SourceController : Controller
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly DbContext _dbContext;
 
-        public SourceController(IUnitOfWork unitOfWork)
+        public SourceController(DbContext dbContext)
         {
-            _unitOfWork = unitOfWork;
+            _dbContext = dbContext;
         }
+
         public ViewResult AddNewSource()
         {
             return View(new AddSourceViewModel());
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddNewSource(AddSourceViewModel addSource)
         {
             if (!ModelState.IsValid)
@@ -29,63 +33,46 @@ namespace AspNet_RssReader_WebUI.Controllers
             Source source = new Source
             {
                 Name = addSource.Name,
-                Link = addSource.Link
+                Link = addSource.Link,
+                ApplicationUserId = User.Identity.GetUserId()
             };
 
-            _unitOfWork.Repository<Source>().Add(source);
-            _unitOfWork.Save();
+            _dbContext.Set<Source>().Add(source);
+            _dbContext.SaveChanges();
 
             return RedirectToAction("List", "Article");
         }
 
-        public ViewResult EditSource(int sourceId)
+        public ActionResult DeleteSource(string sourceName)
         {
-            Source source = _unitOfWork.Repository<Source>().GetById(sourceId);
+            string userId = User.Identity.GetUserId();
 
-            EditSourceViewModel editSource = new EditSourceViewModel
-            {
-                Link = source.Link,
-                Name = source.Name,
-                SourceId = sourceId
-            };
+            Source source =
+                _dbContext
+                    .Set<Source>()
+                    .FirstOrDefault(x => x.Name == sourceName && x.ApplicationUserId == userId);
+                
 
-            return View(editSource);
+            if (source == null)
+                return View("Error");
+
+            DeleteSourceViewModel deleteSourceViewModel = new DeleteSourceViewModel {Name = sourceName};
+
+            return View(deleteSourceViewModel);
         }
 
-        [HttpPost]
-        public ActionResult EditSource(EditSourceViewModel editSource)
+        [HttpPost,ActionName("DeleteSource")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteSourceConfirmed(DeleteSourceViewModel deleteSource)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(editSource);
-            }
+            string userId = User.Identity.GetUserId();
+            Source source =
+                _dbContext
+                    .Set<Source>()
+                    .FirstOrDefault(x => x.Name == deleteSource.Name && x.ApplicationUserId == userId);
 
-            Source source = _unitOfWork.Repository<Source>().GetById(editSource.SourceId);
-            source.Name = editSource.Name;
-            source.Link = editSource.Link;
-
-            _unitOfWork.Repository<Source>().Update(source);
-            _unitOfWork.Save();
-
-            return RedirectToAction("List", "Article");
-        }
-
-        public ActionResult DeleteSource(int sourceId)
-        {
-            Source source = _unitOfWork.Repository<Source>().GetById(sourceId);
-
-            DeleteSourceViewModel deleteSource = new DeleteSourceViewModel()
-            {
-                SourceId = sourceId,
-                Name = source.Name
-            };
-
-            return View(deleteSource);
-        }
-        public ActionResult DeleteConfirmed(int sourceId)
-        {
-            _unitOfWork.Repository<Source>().Delete(sourceId);
-            _unitOfWork.Save();
+            _dbContext.Set<Source>().Remove(source);
+            _dbContext.SaveChanges();
 
             return RedirectToAction("List", "Article");
         }

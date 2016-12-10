@@ -71,27 +71,21 @@
     <Compile Include="Concrete\ApplicationDbContext.cs" />
     <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Entities\Article.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\SavedArticle.cs" />
     <Compile Include="Entities\Source.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
-    <Compile Include="Migrations\201610031359457_Intial.cs" />
-    <Compile Include="Migrations\201610031359457_Intial.Designer.cs">
-      <DependentUpon>201610031359457_Intial.cs</DependentUpon>
+    <Compile Include="Migrations\201612101440473_Intial.cs" />
+    <Compile Include="Migrations\201612101440473_Intial.Designer.cs">
+      <DependentUpon>201612101440473_Intial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610080831185_DateUpdate.cs" />
-    <Compile Include="Migrations\201610080831185_DateUpdate.Designer.cs">
-      <DependentUpon>201610080831185_DateUpdate.cs</DependentUpon>
+    <Compile Include="Migrations\201612101908043_Make source index not unique.cs" />
+    <Compile Include="Migrations\201612101908043_Make source index not unique.Designer.cs">
+      <DependentUpon>201612101908043_Make source index not unique.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201612051117038_Add article author.cs" />
-    <Compile Include="Migrations\201612051117038_Add article author.Designer.cs">
-      <DependentUpon>201612051117038_Add article author.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612071413289_Authentication.cs" />
-    <Compile Include="Migrations\201612071413289_Authentication.Designer.cs">
-      <DependentUpon>201612071413289_Authentication.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201612071652449_Delete role.cs" />
-    <Compile Include="Migrations\201612071652449_Delete role.Designer.cs">
-      <DependentUpon>201612071652449_Delete role.cs</DependentUpon>
+    <Compile Include="Migrations\201612101926033_Source category FK.cs" />
+    <Compile Include="Migrations\201612101926033_Source category FK.Designer.cs">
+      <DependentUpon>201612101926033_Source category FK.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -101,27 +95,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610031359457_Intial.resx">
-      <DependentUpon>201610031359457_Intial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610080831185_DateUpdate.resx">
-      <DependentUpon>201610080831185_DateUpdate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612051117038_Add article author.resx">
-      <DependentUpon>201612051117038_Add article author.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612071413289_Authentication.resx">
-      <DependentUpon>201612071413289_Authentication.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201612071652449_Delete role.resx">
-      <DependentUpon>201612071652449_Delete role.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\CSharp-HtmlParser\CSharp-HtmlParser-Library\CSharp-HtmlParser-Library.csproj">
       <Project>{874b41ea-18d4-45c3-a08b-67fcd0227740}</Project>
       <Name>CSharp-HtmlParser-Library</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201612101440473_Intial.resx">
+      <DependentUpon>201612101440473_Intial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612101908043_Make source index not unique.resx">
+      <DependentUpon>201612101908043_Make source index not unique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612101926033_Source category FK.resx">
+      <DependentUpon>201612101926033_Source category FK.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

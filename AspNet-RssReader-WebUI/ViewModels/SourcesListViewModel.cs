@@ -6,6 +6,6 @@ namespace AspNet_RssReader_WebUI.ViewModels
     public class SourcesListViewModel
     {
         public IEnumerable<Source> Sources { get; set; }
-        public int? CurrentSourceId { get; set; }
+        public string CurrentSourceName { get; set; }
     }
 }

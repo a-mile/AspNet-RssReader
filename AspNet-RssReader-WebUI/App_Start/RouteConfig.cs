@@ -14,55 +14,22 @@ namespace AspNet_RssReader_WebUI
                 {
                     controller = "Article",
                     action = "List",
-                    sourceId = (int?) null,
-                    page = 1
+                    sourceName = (string)null,
                 });
 
-            routes.MapRoute(null, "Page{page}",
+            routes.MapRoute(null, "{SourceName}",
                 new
                 {
                     controller = "Article",
                     action = "List",
-                    sourceId = (int?) null
-                },
-                new
-                {
-                    page = @"\d+"
                 });
 
-            routes.MapRoute(null, "Source{sourceId}",
-                new
-                {
-                    controller = "Article",
-                    action = "List",
-                    page = 1
-                },
-                new
-                {
-                    sourceId = @"\d+"
-                });
-
-            routes.MapRoute(null, "Source{sourceId}/Page{page}",
-                new
-                {
-                    controller = "Article",
-                    action = "List"
-                }, 
-                new
-                {
-                    page = @"\d+",
-                    sourceId = @"\d+"
-                });
-
-            routes.MapRoute(null, "Source{sourceId}/Edit",
+  
+            routes.MapRoute(null, "Delete/{sourceName}",
                 new
                 {
                     controller = "Source",
-                    action = "EditSource" 
-                },
-                new
-                {
-                    sourceId = @"\d+"
+                    action = "DeleteSource" 
                 });
 
             routes.MapRoute(null, "MarkAllAsRead",
@@ -70,18 +37,14 @@ namespace AspNet_RssReader_WebUI
                 {
                     controller = "Article",
                     action = "MarkAllAsRead",
-                    sourceId = (int?)null
+                    sourceName = (string)null
                 });
 
-            routes.MapRoute(null, "Source{sourceId}/MarkAllAsRead",
+            routes.MapRoute(null, "MarkAllAsRead/{sourceName}",
                 new
                 {
                     controller = "Article",
                     action = "MarkAllAsRead"
-                },
-                new
-                {
-                    sourceId = @"\d+"
                 });
 
             routes.MapRoute(null, "{controller}/{action}");

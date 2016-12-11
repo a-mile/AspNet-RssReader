@@ -4,33 +4,36 @@
     ViewBag.Title = "Articles list";
 }
 
-<div class="feed-buttons">
-    @Html.ActionLink("Mark all as read", "MarkAllAsRead", "Article", new {sourceName = Model.SourceName}, new { @class = "button feed-button blur" })
-    <div class="button feed-button blur sorting-dropdown">
-        <div>Sorting</div>
-        <div class="sorting-dropdown-content">
-            @Html.ActionLink("Date ascending", "List", "Article", new { sourceName = Model.SourceName, sortingBy = "PubDate", sortingOrder="Asc" }, new { @class = "button feed-button blur" })
-            @Html.ActionLink("Date descending", "List", "Article", new { sourceName = Model.SourceName, sortingBy = "PubDate", sortingOrder = "Desc" }, new { @class = "button feed-button blur" })
+@if (Model != null)
+{
+    <div class="feed-buttons">
+        @Html.ActionLink("Mark all as read", "MarkAllAsRead", "Article", new {sourceName = Model.SourceName}, new {@class = "button feed-button blur"})
+        <div class="button feed-button blur sorting-dropdown">
+            <div>Sorting</div>
+            <div class="sorting-dropdown-content">
+                @Html.ActionLink("Date ascending", "List", "Article", new {sourceName = Model.SourceName, sortingBy = "PubDate", sortingOrder = "Asc"}, new {@class = "button feed-button blur"})
+                @Html.ActionLink("Date descending", "List", "Article", new {sourceName = Model.SourceName, sortingBy = "PubDate", sortingOrder = "Desc"}, new {@class = "button feed-button blur"})
+            </div>
         </div>
+
+        @if (Model.SourceName != null)
+        {
+            @Html.ActionLink("Delete source", "DeleteSource", "Source", new {sourceName = Model.SourceName}, new {@class = "button feed-button blur"})
+        }
     </div>
 
-    @if (Model.SourceName != null)
-    {
-        @Html.ActionLink("Delete source", "DeleteSource", "Source", new { sourceName = Model.SourceName}, new {@class = "button feed-button blur" })
-    }
-</div>
+    <input type="hidden" id="sourceName" value="@if (Model.SourceName != null)
+                                                {
+                                                    @Model.SourceName
+                                                }">
 
-<input type="hidden" id="sourceName" value="@if (Model.SourceName != null)
-    {
-        @Model.SourceName
-    }">
-   
-<input type="hidden" id="sortingBy" value="@Model.SortingBy">
-<input type="hidden" id="sortingOrder" value="@Model.SortingOrder">
-<div id="feed">
-</div>
+    <input type="hidden" id="sortingBy" value="@Model.SortingBy">
+    <input type="hidden" id="sortingOrder" value="@Model.SortingOrder">
+    <div id="feed">
+    </div>
 
-<script src="~/Scripts/articleLoad.js"></script>
-<script src="~/Scripts/markArticleAsRead.js"></script>
+    <script src="~/Scripts/articleLoad.js"></script>
+    <script src="~/Scripts/markArticleAsRead.js"></script>
+}
 
 

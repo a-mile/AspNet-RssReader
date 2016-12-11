@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -11,10 +12,17 @@
 </head>
 <body>
     <div class="top">
-        <ul class="navbar theme top left-align large">
+        <ul class="navbar theme top left-align large">  
             <li class="opennav right hide-large">
                 <a class="hover-white large theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
-            </li>
+            </li>        
+            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
+                {
+                    @Html.AntiForgeryToken()            
+                    <li class="right opennav"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                    <li class="right hide-small" style="margin: 12px">Hello @User.Identity.GetUserName()</li>
+            }
+            
             <li><a href="#" class="theme-l1">Rss Reader</a></li>
             <li class="hide-small"><a href="#" class="hover-white">About</a></li>
         </ul>

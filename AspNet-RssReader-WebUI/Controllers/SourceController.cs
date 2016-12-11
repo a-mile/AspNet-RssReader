@@ -25,6 +25,18 @@ namespace AspNet_RssReader_WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNewSource(AddSourceViewModel addSource)
         {
+            string userId = User.Identity.GetUserId();
+
+            if (_dbContext.Set<Source>().Any(x => x.ApplicationUserId == userId && x.Name == addSource.Name))
+            {
+                ModelState.AddModelError("Name", "There is already source with this name");
+            }
+
+            if (_dbContext.Set<Source>().Any(x => x.ApplicationUserId == userId && x.Link == addSource.Link))
+            {
+                ModelState.AddModelError("Link", "There is already source with this link");
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(addSource);

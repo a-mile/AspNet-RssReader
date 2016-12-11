@@ -29,39 +29,45 @@ namespace AspNet_RssReader_WebUI.Controllers
         {
             string userId = User.Identity.GetUserId();
 
-            if (sourceName == null)
-            {                
-                var userSources =
-                    _dbContext.Set<Source>().Where(x => x.ApplicationUserId == userId).ToList();
+            if (_dbContext.Set<Source>().Any(x => x.ApplicationUserId == userId))
+            {
 
-                foreach (var source in userSources)
+                if (sourceName == null)
                 {
+                    var userSources =
+                        _dbContext.Set<Source>().Where(x => x.ApplicationUserId == userId).ToList();
+
+                    foreach (var source in userSources)
+                    {
+                        SynchronizeArticles(source);
+                    }
+                }
+                else
+                {
+                    Source source =
+                        _dbContext
+                            .Set<Source>()
+                            .FirstOrDefault(x => x.ApplicationUserId == userId && x.Name == sourceName);
+
+                    if (source == null)
+                        return View("Error");
+
                     SynchronizeArticles(source);
                 }
+
+                _dbContext.SaveChanges();
+
+                ArticlesListViewModel articlesListViewModel = new ArticlesListViewModel
+                {
+                    SourceName = sourceName,
+                    SortingBy = sortingBy,
+                    SortingOrder = sortingOrder
+                };
+
+                return View(articlesListViewModel);
             }
-            else
-            {
-                Source source =
-                    _dbContext
-                        .Set<Source>()
-                        .FirstOrDefault(x => x.ApplicationUserId == userId && x.Name == sourceName);
 
-                if (source == null)
-                    return View("Error");
-
-                SynchronizeArticles(source);
-            }
-
-            _dbContext.SaveChanges();
-
-            ArticlesListViewModel articlesListViewModel = new ArticlesListViewModel
-            {
-                SourceName = sourceName,
-                SortingBy = sortingBy,
-                SortingOrder = sortingOrder
-            };
-
-            return View(articlesListViewModel);
+            return View("List",null);
         }
 
         private void SynchronizeArticles(Source source)

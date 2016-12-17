@@ -23,8 +23,6 @@ namespace AspNet_RssReader_WebUI.Infrastructure
         private void AddBindings()
         {
             _ninjectKernel.Bind<IArticleDownloader>().To<XmlArticleDownloader>();
-            _ninjectKernel.Bind<IArticleExtractor>().To<MercuryArticleExtractor>();
-            _ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             _ninjectKernel.Bind<DbContext>().To<ApplicationDbContext>();
 
         }

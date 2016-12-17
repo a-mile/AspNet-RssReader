@@ -1,4 +1,4 @@
-﻿@model AspNet_RssReader_WebUI.ViewModels.ArticlesListViewModel
+﻿@model AspNet_RssReader_WebUI.ViewModels.ArticlesListInfoViewModel
 
 @{
     ViewBag.Title = "Articles list";
@@ -11,15 +11,10 @@
         <div class="button feed-button blur sorting-dropdown">
             <div>Sorting</div>
             <div class="sorting-dropdown-content">
-                @Html.ActionLink("Date ascending", "List", "Article", new {sourceName = Model.SourceName, sortingBy = "PubDate", sortingOrder = "Asc"}, new {@class = "button feed-button blur"})
-                @Html.ActionLink("Date descending", "List", "Article", new {sourceName = Model.SourceName, sortingBy = "PubDate", sortingOrder = "Desc"}, new {@class = "button feed-button blur"})
+                @Html.ActionLink("Date ascending", "List", "Article", new {sourceName = Model.SourceName, sortOrder = "date_asc"}, new {@class = "button feed-button blur"})
+                @Html.ActionLink("Date descending", "List", "Article", new {sourceName = Model.SourceName, sortingOrder = "date_desc"}, new {@class = "button feed-button blur"})
             </div>
-        </div>
-
-        @if (Model.SourceName != null)
-        {
-            @Html.ActionLink("Delete source", "DeleteSource", "Source", new {sourceName = Model.SourceName}, new {@class = "button feed-button blur"})
-        }
+        </div>       
     </div>
 
     <input type="hidden" id="sourceName" value="@if (Model.SourceName != null)
@@ -27,8 +22,7 @@
                                                     @Model.SourceName
                                                 }">
 
-    <input type="hidden" id="sortingBy" value="@Model.SortingBy">
-    <input type="hidden" id="sortingOrder" value="@Model.SortingOrder">
+    <input type="hidden" id="sortOrder" value="@Model.SortOrder">
     <div id="feed">
     </div>
 

@@ -14,40 +14,16 @@ $(document).ready(function () {
 
 function GetArticles() {
     var sourceName = $('#sourceName').val();
-    var sortingBy = $('#sortingBy').val();
-    var sortingOrder = $('#sortingOrder').val();
+    var sortOrder = $('#sortOrder').val();
 
     $.ajax({
         type: 'GET',
         url: '/Article/GetArticles',
-        data: { "sourceName": sourceName, "page": pageIndex, "sortingBy":sortingBy, "sortingOrder": sortingOrder },
-        dataType: 'json',
+        data: { "sourceName": sourceName, "page": pageIndex, "sortOrder": sortOrder },
+        dataType: 'html',
         success: function (data) {
             if (data != null) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#feed").append(                                                
-                       "<div class='item border blur " + data[i].Read +
-                       "'onclick=\"markArticleAsRead('" + data[i].Link +"',"+ data[i].Id + ",this);\">" +
-                           "<div class='item-image center border-bottom'>" +
-                               "<img src='" + data[i].ImageUrl + "'>" +
-                            "</div>" +
-                            "<div>" + 
-                                "<div class='item-info border-bottom'>" +
-                                    "<div class='item-date'>" +
-                                        "<p>" + data[i].PublicationTime + "</p>" +
-                                    "</div>" + 
-                                    "<div class='item-source'>" + 
-                                        "<p>" + data[i].SourceName + "</p>" +
-                                    "</div>" + 
-                                "</div>" + 
-                                "<div class='item-description'>" + 
-                                    "<h3>" + data[i].Title + "</h3>" +
-                                    "<p>" + data[i].Description + "</p>" +
-                                "</div>" + 
-                            "</div>" + 
-                        "</div>"                                                       
-                    );
-                }
+                $("#feed").append(data);
                 pageIndex++;
             }
         },

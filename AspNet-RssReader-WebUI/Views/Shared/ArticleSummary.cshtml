@@ -1,21 +1,18 @@
-﻿@model AspNet_RssReader_WebUI.ViewModels.ArticleViewModel
+﻿@model AspNet_RssReader_WebUI.ViewModels.ArticlesListViewModel
 
-<div class="item border" onclick="window.open('@Model.Link','_blank');">
-    <div class="item-image center border-bottom">
-        Image
-    </div>
-    <div>
-        <div class="item-info border-bottom">
-            <div class="item-date">
-                <p>@Model.PublicationTime</p>
-            </div>
-            <div class="item-source">
-                <p>@Model.SourceName</p>
-            </div>
+@foreach (var article in Model.ArticleViewModels)
+{
+    <div class="card">
+        <header class="container black">
+            <h4>@article.Title</h4>
+        </header>
+
+        <div class="container content">
+            <p>@article.Description</p>
         </div>
-        <div class="item-description">
-            <h3>@Model.Title</h3>
-            <p>@Model.Description</p>
-        </div>
-    </div>
-</div>
+
+        <footer class="container black">
+            <h5>@article.SourceName / @article.PublicationTime</h5>
+        </footer>
+    </div>       
+}

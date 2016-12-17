@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,10 +21,9 @@ namespace AspNet_RssReader_Domain.Entities
         [ForeignKey("Category")]
         public int? CategoryId { get; set; }
 
-        [Index]
-        [MaxLength(56)]
         public string Name { get; set; }
         public string Link { get; set; }
+        public DateTime? SyncDate { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }

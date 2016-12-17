@@ -62,14 +62,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IArticleDownloader.cs" />
-    <Compile Include="Abstract\IArticleExtractor.cs" />
-    <Compile Include="Abstract\IUnitOfWork.cs" />
-    <Compile Include="Abstract\IRepository.cs" />
-    <Compile Include="Concrete\MercuryArticleExtractor.cs" />
     <Compile Include="Concrete\XmlArticleDownloader.cs" />
-    <Compile Include="Concrete\GenericRepository.cs" />
     <Compile Include="Concrete\ApplicationDbContext.cs" />
-    <Compile Include="Concrete\UnitOfWork.cs" />
     <Compile Include="Entities\Article.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\SavedArticle.cs" />
@@ -86,6 +80,10 @@
     <Compile Include="Migrations\201612101926033_Source category FK.cs" />
     <Compile Include="Migrations\201612101926033_Source category FK.Designer.cs">
       <DependentUpon>201612101926033_Source category FK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612170904583_Source sync date.cs" />
+    <Compile Include="Migrations\201612170904583_Source sync date.Designer.cs">
+      <DependentUpon>201612170904583_Source sync date.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,6 +107,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201612101926033_Source category FK.resx">
       <DependentUpon>201612101926033_Source category FK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612170904583_Source sync date.resx">
+      <DependentUpon>201612170904583_Source sync date.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

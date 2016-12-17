@@ -18,10 +18,11 @@ namespace AspNet_RssReader_WebUI.Controllers
         public PartialViewResult Menu(string sourceName = null)
         {
             string userId = User.Identity.GetUserId();
-            SourcesListViewModel sourcesList = new SourcesListViewModel
+            NavMenuViewModel sourcesList = new NavMenuViewModel
             {
                 Sources = _dbContext.Set<Source>().Where(x=>x.ApplicationUserId == userId),
-                CurrentSourceName = sourceName
+                CurrentSourceName = sourceName,
+                Categories = _dbContext.Set<Category>().Where(x=>x.ApplicationUserId == userId)
             };
             return PartialView(sourcesList);
         }

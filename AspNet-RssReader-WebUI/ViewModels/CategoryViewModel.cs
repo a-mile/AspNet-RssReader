@@ -5,8 +5,9 @@ using System.Web;
 
 namespace AspNet_RssReader_WebUI.ViewModels
 {
-    public class ArticlesListViewModel
+    public class CategoryViewModel
     {
-        public IEnumerable<ArticleViewModel> ArticleViewModels { get; set; }
+        public int? Id { get; set; }
+        public string Name { get; set; }
     }
 }

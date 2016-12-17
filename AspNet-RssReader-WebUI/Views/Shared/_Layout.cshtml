@@ -5,53 +5,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="~/Content/Site.css" type="text/css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/sidenav.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/accordion.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/sourcebar.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/card.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/form.css" type="text/css" />
     <script src="~/Scripts/jquery-1.10.2.js"></script>
 </head>
-<body>
-    <div class="top">
-        <ul class="navbar theme top left-align large">  
-            <li class="opennav right hide-large">
-                <a class="hover-white large theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
-            </li>        
-            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm"}))
-                {
-                    @Html.AntiForgeryToken()            
-                    <li class="right opennav"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                    <li class="right hide-small" style="margin: 12px">Hello @User.Identity.GetUserName()</li>
-            }
-            
-            <li><a href="#" class="theme-l1">Rss Reader</a></li>
-            <li class="hide-small"><a href="#" class="hover-white">About</a></li>
-        </ul>
-    </div>
+<body>   
 
 @{ Html.RenderAction("Menu", "Nav"); }
     
-<div class="main">
+<div id="main">
     @RenderBody()
 </div>
 
 <script>
-    var mySidenav = document.getElementById("mySidenav");
 
-    var overlayBg = document.getElementById("myOverlay");
+    var acc = document.getElementsByClassName("accordion");
+    var i;
 
-    function w3_open() {
-        if (mySidenav.style.display === 'block') {
-            mySidenav.style.display = 'none';
-            overlayBg.style.display = "none";
-        } else {
-            mySidenav.style.display = 'block';
-            overlayBg.style.display = "block";
+    for (i = 0; i < acc.length; i++) {
+        acc[i].onclick = function () {
+            this.classList.toggle("active");
+            this.nextElementSibling.classList.toggle("show");
         }
-    }
-
-    function w3_close() {
-        mySidenav.style.display = "none";
-        overlayBg.style.display = "none";
     }
 </script>
 

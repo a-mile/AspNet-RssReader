@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
-using AspNet_RssReader_Domain.Entities;
 
 namespace AspNet_RssReader_WebUI.ViewModels
 {
-    public class AddSourceViewModel
-    {      
+    public class EditSourceViewModel
+    {
+        public int SourceId { get; set; }
+
         [Required]
         [Display(Name = "Source name")]
         public string Name { get; set; }
@@ -21,6 +25,6 @@ namespace AspNet_RssReader_WebUI.ViewModels
 
         public IEnumerable<CategoryViewModel> CategoriesViewModel { get; set; }
 
-        public IEnumerable<SelectListItem> Categories => new SelectList(CategoriesViewModel,"Id","Name");
+        public IEnumerable<SelectListItem> Categories => new SelectList(CategoriesViewModel, "Id", "Name");
     }
 }

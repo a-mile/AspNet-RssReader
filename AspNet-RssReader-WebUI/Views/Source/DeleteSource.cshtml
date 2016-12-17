@@ -4,22 +4,18 @@
     ViewBag.Title = "Delete source";
 }
 
-<div class="editor full-width">
+
     <h2>Delete source</h2>
     <p>Are you sure do you want to delete @Model.Name ?</p>
     @using (Html.BeginForm("DeleteSource", "Source", FormMethod.Post, new { role = "form" }))
     {
         @Html.AntiForgeryToken()
         @Html.EditorFor(x=>x.Name)
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Yes" class="button full-width blur" />
-            </div>
+        <div>
+            <input name="sure" type="submit" value="Yes"/>
+        </div>
+        <div>
+            <input name="sure" type="submit" value="No"/>
         </div>
     }
- 
-    @Html.ActionLink("No", "List", "Article",
-        new { sourceName = Model.Name },
-        new { @class = "button full-width blur" })
-</div>
 

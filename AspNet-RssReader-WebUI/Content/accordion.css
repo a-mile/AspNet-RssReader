@@ -1,0 +1,30 @@
+﻿a.accordion {
+    cursor: pointer;
+}
+
+a.accordion:after {
+    content: '\02795';
+    font-size: 22px;
+    margin-left: 42px;
+    margin-right: 10px;
+    float: right;
+}
+
+a.accordion.active:after {
+    content: "\2796";
+}
+
+div.panel {
+    padding: 0;
+    padding-left: 40px;
+    background-color: #111;
+    max-height: 0;
+    overflow: hidden;
+    transition: 0.6s ease-in-out;
+    opacity: 0;
+}
+
+div.panel.show {
+    opacity: 1;
+    max-height: 250px;  
+}

@@ -1,45 +1,86 @@
-﻿@model AspNet_RssReader_WebUI.ViewModels.SourcesListViewModel
+﻿@model AspNet_RssReader_WebUI.ViewModels.NavMenuViewModel
 
-<nav class="sidenav collapse theme-l5 animate-left" style="z-index:3;width:250px;margin-top:51px;" id="mySidenav">
-    <a href="javascript:void(0)" onclick="w3_close()" class="right xlarge padding-large hover-black hide-large" title="close menu">
-        <i class="fa fa-remove"></i>
-    </a>
-    <h4><b>Menu</b></h4>
-    @Html.ActionLink("Add new source", "AddNewSource", "Source",null, new {@class = "hover-black" })
-    @(Model.CurrentSourceName == null ? Html.ActionLink("All", "List", "Article", null, new {@class = "hover-black active"}) : Html.ActionLink("All", "List", "Article", null, new {@class = "hover-black"}))
-    @foreach (var source in Model.Sources)
-    {
-        if (source.Name == Model.CurrentSourceName)
+<div id="mySidenav" class="sidenav">
+    @Html.ActionLink("New source", "AddNewSource", "Source")
+    @Html.ActionLink("New category","AddNewCategory","Category")<br />
+    @Html.ActionLink("All articles", "List", "Article")<br />
+
+    <a class="accordion">Sources</a>
+    <div class="panel">
+        @foreach (var source in Model.Sources.ToList())
         {
-           @Html.RouteLink(source.Name,
-            new
-            {
-                controller = "Article",
-                action = "List",
-                sourceName = source.Name
-            },
-            new
-            {
-                @class = "hover-black active"
-            })
+            <div class="sourcebar">
+                @Html.RouteLink(source.Name,
+                    new
+                    {
+                        controller = "Article",
+                        action = "List",
+                        sourceName = source.Name
+                    }, new
+                    {
+                        @class = "sourcelink"
+                    })
+                @Html.RouteLink(HttpUtility.HtmlDecode("&equiv;"),
+                    new
+                    {
+                        controller = "Source",
+                        action = "EditSource",
+                        sourceName = source.Name
+                    }, new
+                    {
+                        @class = "sourcebarbutton"
+                    })
+                @Html.RouteLink(HttpUtility.HtmlDecode("&times;"),
+                    new
+                    {
+                        controller = "Source",
+                        action = "DeleteSource",
+                        sourceName = source.Name
+                    },new
+                    {
+                        @class="sourcebarbutton"
+                    })
+            </div>
         }
-        else
+    </div>
+    
+    <a class="accordion">Categories</a>
+    <div class="panel">
+        @foreach (var category in Model.Categories.ToList())
         {
-            @Html.RouteLink(source.Name,
-            new
-            {
-                controller = "Article",
-                action = "List",
-                sourceName = source.Name
-            },
-            new
-            {
-                @class = "hover-black"
-            })
+            <div class="sourcebar">
+                @Html.RouteLink(category.Name,
+                    new
+                    {
+                        controller = "Article",
+                        action = "List",
+                        categoryName = category.Name
+                    }, new
+                    {
+                        @class = "sourcelink"
+                    })
+                @Html.RouteLink(HttpUtility.HtmlDecode("&equiv;"),
+                    new
+                    {
+                        controller = "Category",
+                        action = "EditCategory",
+                        categoryName = category.Name
+                    }, new
+                    {
+                        @class = "sourcebarbutton"
+                    })
+                @Html.RouteLink(HttpUtility.HtmlDecode("&times;"),
+                    new
+                    {
+                        controller = "Category",
+                        action = "DeleteCategory",
+                        sourceName = category.Name
+                    }, new
+                    {
+                        @class = "sourcebarbutton"
+                    })
+            </div>
         }
-
-    }
-</nav>
-
-<div class="overlay hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
+    </div>
+</div>
 

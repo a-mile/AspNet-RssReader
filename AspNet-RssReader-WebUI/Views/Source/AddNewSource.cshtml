@@ -3,31 +3,34 @@
     ViewBag.Title = "AddNewSource";
 }
 
-<div class="editor full-width">
     <h3>Add new source</h3>
     @using (Html.BeginForm("AddNewSource", "Source", FormMethod.Post, new { role = "form" }))
     {
         @Html.AntiForgeryToken()
-        <div class="form-group">
+        <div>
             @Html.LabelFor(m => m.Name)
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Name, new { @class = "button full-width" })
+            <div>
+                @Html.TextBoxFor(m => m.Name)
                 @Html.ValidationMessageFor(m => m.Name)
             </div>
         </div>
 
-        <div class="form-group">
+        <div>
             @Html.LabelFor(m => m.Link)
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Link, new { @class = "button full-width" })
+            <div>
+                @Html.TextBoxFor(m => m.Link)
                 @Html.ValidationMessageFor(m => m.Link)
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Add" class="button full-width blur" />
+        <div>
+            @Html.LabelFor(m=>m.SelectedCategoryId)
+            <div>
+                @Html.DropDownListFor(m=>m.SelectedCategoryId, Model.Categories)
             </div>
         </div>
+
+        <div>
+            <input type="submit" value="Add"/>
+        </div>
     }
-</div>

@@ -2,7 +2,7 @@
     cursor: pointer;
 }
 
-a.accordion:after {
+a.sources:after {
     content: '\02795';
     font-size: 22px;
     margin-left: 42px;
@@ -10,7 +10,7 @@ a.accordion:after {
     float: right;
 }
 
-a.accordion.active:after {
+a.sources.active:after {
     content: "\2796";
 }
 

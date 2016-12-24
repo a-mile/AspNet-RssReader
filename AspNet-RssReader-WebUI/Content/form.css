@@ -1,4 +1,4 @@
-﻿input[type=text] {
+﻿input[type=text], input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -22,10 +22,17 @@ input[type=button], input[type=submit], input[type=reset] {
     text-decoration: none;
     margin: 4px 2px;
     cursor: pointer;
-    width: 100%;
+    width: 92.2%;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
 }
 select {
     width: 100%;
     padding: 16px 20px;
     margin: 4px 2px;
+}
+.sortlink {
+    text-decoration: none;
+    color: black;
 }

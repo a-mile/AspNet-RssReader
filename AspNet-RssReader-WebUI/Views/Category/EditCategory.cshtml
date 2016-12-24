@@ -1,0 +1,26 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.EditCategoryViewModel
+
+@{
+    ViewBag.Title = "EditCategory";
+}
+
+<h3>Edit category</h3>
+
+@using (Html.BeginForm("EditCategory", "Category", FormMethod.Post, new { role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.LabelFor(m => m.Name)
+        <div>
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+    </div>
+
+        @Html.HiddenFor(x => x.CategoryId)
+
+        <div>
+            <input type="submit" value="Update" />
+        </div>
+}
+

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using AspNet_RssReader_Domain.Entities;
+using AspNet_RssReader_WebUI.Validation;
 
 namespace AspNet_RssReader_WebUI.ViewModels
 {
@@ -9,11 +10,13 @@ namespace AspNet_RssReader_WebUI.ViewModels
     {      
         [Required]
         [Display(Name = "Source name")]
+        [StringLength(15)]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = "RSS channel link")]
-        [Url(ErrorMessage = "Please enter a valid link")]
+        [RssLinkValidator]
+        [StringLength(200)]
         public string Link { get; set; }
 
         [Display(Name = "Category")]

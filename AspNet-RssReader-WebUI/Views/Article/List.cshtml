@@ -6,24 +6,34 @@
 
 @if (Model != null)
 {
-    <div class="feed-buttons">
-        @Html.ActionLink("Mark all as read", "MarkAllAsRead", "Article", new {sourceName = Model.SourceName}, new {@class = "button feed-button blur"})
-        <div class="button feed-button blur sorting-dropdown">
-            <div>Sorting</div>
-            <div class="sorting-dropdown-content">
-                @Html.ActionLink("Date ascending", "List", "Article", new {sourceName = Model.SourceName, sortOrder = "date_asc"}, new {@class = "button feed-button blur"})
-                @Html.ActionLink("Date descending", "List", "Article", new {sourceName = Model.SourceName, sortingOrder = "date_desc"}, new {@class = "button feed-button blur"})
-            </div>
-        </div>       
-    </div>
-
-    <input type="hidden" id="sourceName" value="@if (Model.SourceName != null)
+    <div id="feed">
+        <div>
+            Sorting: 
+            @if (Model.SortOrder == "date_desc")
+            {
+                @Html.ActionLink("Date ascending", "List", "Article", new {sourceName = Model.SourceName, categoryName = Model.CategoryName, sortOrder = "date_asc"}, new {@class = "sortlink"})
+                @:/
+                @Html.ActionLink("Date descending", "List", "Article", new {sourceName = Model.SourceName, categoryName = Model.CategoryName, sortingOrder = "date_desc"}, new {@class = "sortlink", style = "font-weight:bold"})
+            }
+            else
+            {
+                @Html.ActionLink("Date ascending", "List", "Article", new { sourceName = Model.SourceName, categoryName = Model.CategoryName, sortOrder = "date_asc" }, new { @class = "sortlink", style = "font-weight:bold" })
+                @:/
+                @Html.ActionLink("Date descending", "List", "Article", new { sourceName = Model.SourceName, categoryName = Model.CategoryName, sortingOrder = "date_desc" }, new { @class = "sortlink" })
+            }
+             </div>
+        <br/>
+        @Html.ActionLink("Mark all as read", "MarkAllAsRead", "Article", new { sourceName = Model.SourceName, categoryName = Model.CategoryName }, new { @class = "button" })
+        <input type="hidden" id="sourceName" value="@if (Model.SourceName != null)
                                                 {
                                                     @Model.SourceName
                                                 }">
+        <input type="hidden" id="categoryName" value="@if (Model.CategoryName != null)
+                                                {
+                                                    @Model.CategoryName
+                                                }">
 
-    <input type="hidden" id="sortOrder" value="@Model.SortOrder">
-    <div id="feed">
+        <input type="hidden" id="sortOrder" value="@Model.SortOrder">
     </div>
 
     <script src="~/Scripts/articleLoad.js"></script>

@@ -6,8 +6,10 @@ using System.Web;
 
 namespace AspNet_RssReader_WebUI.ViewModels
 {
-    public class AddCategoryViewModel
+    public class EditCategoryViewModel
     {
+        public int CategoryId { get; set; }
+
         [Required]
         [Display(Name = "Category name")]
         [StringLength(15)]

@@ -1,15 +1,38 @@
 ﻿@model AspNet_RssReader_WebUI.ViewModels.NavMenuViewModel
 
 <div id="mySidenav" class="sidenav">
+    @using (Html.BeginForm("LogOff", "Account",FormMethod.Post,new {role="form"}))
+    {
+        @Html.AntiForgeryToken()
+        <input type="submit" value="Log off" class="submitLink"/>
+    }<br/>
     @Html.ActionLink("New source", "AddNewSource", "Source")
-    @Html.ActionLink("New category","AddNewCategory","Category")<br />
-    @Html.ActionLink("All articles", "List", "Article")<br />
+    @Html.ActionLink("New category", "AddNewCategory", "Category")<br/>
 
-    <a class="accordion">Sources</a>
+    @Html.RouteLink("All sources",
+        new
+        {
+            controller = "Article",
+            action = "List"
+        }, new
+        {
+            @class = "barlink-first"
+        })
+
+    <a class="barbutton-first"></a>
+    <a class="barbutton-first"></a>
+    @if (Model.Sources.Any())
+    {
+        <a class="barbutton-first accordion rotate"><i class="fa fa-chevron-right" style="font-size: 18px"></i></a>
+    }
+    else
+    {
+        <a class="barbutton-first"></a>
+    }
     <div class="panel">
         @foreach (var source in Model.Sources.ToList())
         {
-            <div class="sourcebar">
+            <div>
                 @Html.RouteLink(source.Name,
                     new
                     {
@@ -18,69 +41,57 @@
                         sourceName = source.Name
                     }, new
                     {
-                        @class = "sourcelink"
+                        @class = "barlink-second"
                     })
-                @Html.RouteLink(HttpUtility.HtmlDecode("&equiv;"),
-                    new
-                    {
-                        controller = "Source",
-                        action = "EditSource",
-                        sourceName = source.Name
-                    }, new
-                    {
-                        @class = "sourcebarbutton"
-                    })
-                @Html.RouteLink(HttpUtility.HtmlDecode("&times;"),
-                    new
-                    {
-                        controller = "Source",
-                        action = "DeleteSource",
-                        sourceName = source.Name
-                    },new
-                    {
-                        @class="sourcebarbutton"
-                    })
+                <a href="@Url.Action("EditSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-bars"></i></a>
+                <a href="@Url.Action("DeleteSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-close"></i></a>
             </div>
         }
     </div>
-    
-    <a class="accordion">Categories</a>
-    <div class="panel">
-        @foreach (var category in Model.Categories.ToList())
+
+    @foreach (var category in Model.Categories.ToList())
+    {
+        @Html.RouteLink(category.Name,
+            new
+            {
+                controller = "Article",
+                action = "List",
+                categoryName = category.Name
+            }, new
+            {
+                @class = "barlink-first"
+            })
+
+        <a href="@Url.Action("EditCategory", "Category", new {categoryName = category.Name})" class="barbutton-first"><i class="fa fa-bars"></i></a>
+        <a href="@Url.Action("DeleteCategory", "Category", new {categoryName = category.Name})" class="barbutton-first"><i class="fa fa-close"></i></a>
+        if (category.Sources.Any())
         {
-            <div class="sourcebar">
-                @Html.RouteLink(category.Name,
-                    new
-                    {
-                        controller = "Article",
-                        action = "List",
-                        categoryName = category.Name
-                    }, new
-                    {
-                        @class = "sourcelink"
-                    })
-                @Html.RouteLink(HttpUtility.HtmlDecode("&equiv;"),
-                    new
-                    {
-                        controller = "Category",
-                        action = "EditCategory",
-                        categoryName = category.Name
-                    }, new
-                    {
-                        @class = "sourcebarbutton"
-                    })
-                @Html.RouteLink(HttpUtility.HtmlDecode("&times;"),
-                    new
-                    {
-                        controller = "Category",
-                        action = "DeleteCategory",
-                        sourceName = category.Name
-                    }, new
-                    {
-                        @class = "sourcebarbutton"
-                    })
-            </div>
+            <a class="accordion barbutton-first rotate"><i class="fa fa-chevron-right" style="font-size: 18px"></i></a>
         }
-    </div>
+        else
+        {
+            <a class="barbutton-first"></a>
+        }
+
+        <div class="panel">
+            @foreach (var source in category.Sources)
+            {
+                <div>
+                    @Html.RouteLink(source.Name,
+                        new
+                        {
+                            controller = "Article",
+                            action = "List",
+                            sourceName = source.Name
+                        }, new
+                        {
+                            @class = "barlink-second"
+                        })
+                    <a href="@Url.Action("EditSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-bars"></i></a>
+                    <a href="@Url.Action("DeleteSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-close"></i></a>
+                </div>
+            }
+        </div>
+    }
 </div>
 

@@ -11,7 +11,7 @@
     top: 0;
     left: 0;
     background-color: #111;
-    overflow-x: hidden;
+    overflow: hidden;
     padding-top: 60px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -19,11 +19,26 @@
 .sidenav a {
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
+    font-size: 20px;
     color: #818181;
     display: block;
     transition: 0.3s;
     white-space: nowrap;
+}
+.submitLink {
+    padding: 8px 8px 8px 32px !important;
+    text-decoration: none !important;
+    font-size: 20px !important;
+    color: #818181 !important;
+    display: block !important;
+    transition: 0.3s !important;
+    white-space: nowrap !important;
+    margin: 0 !important;
+    width: auto !important;
+}
+
+.submitLink:hover {
+    color: #f1f1f1 !important;
 }
 
 .sidenav a:hover, .offcanvas a:focus{
@@ -41,4 +56,11 @@
 #main {
     padding: 16px;
     margin-left: 250px;
+}
+.rotate{
+    transition: all 0.5s linear;
+}
+
+.rotate.down{
+    transform:rotate(90deg);
 }

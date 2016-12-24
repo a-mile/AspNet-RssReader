@@ -8,29 +8,13 @@ using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
-    public class SourceController : Controller
+    public class SourceController : BaseController
     {
-        private readonly DbContext _dbContext;
-        private ApplicationUser _currentUser;
-
-        public SourceController(DbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
-
-        private ApplicationUser GetCurrentUser()
-        {
-            if (_currentUser == null)
-            {
-                _currentUser = _dbContext.Set<ApplicationUser>().Find(User.Identity.GetUserId());
-            }
-
-            return _currentUser;
-        }
+        public SourceController(DbContext dbContext) : base(dbContext){ }   
 
         public ViewResult AddNewSource()
         {
-            IEnumerable<Category> userCategories = GetCurrentUser().Categories;
+            IEnumerable<Category> userCategories = CurrentUser.Categories;
             List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
             {
                 new CategoryViewModel()
@@ -57,19 +41,19 @@ namespace AspNet_RssReader_WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddNewSource(AddSourceViewModel addSource)
         {
-            if (GetCurrentUser().Sources.Any(x =>x.Name == addSource.Name))
+            if (CurrentUser.Sources.Any(x =>x.Name == addSource.Name))
             {
                 ModelState.AddModelError("Name", "There is already source with this name");
             }
 
-            if (GetCurrentUser().Sources.Any(x => x.Link == addSource.Link))
+            if (CurrentUser.Sources.Any(x => x.Link == addSource.Link))
             {
                 ModelState.AddModelError("Link", "There is already source with this link");
             }
 
             if (!ModelState.IsValid)
             {
-                IEnumerable<Category> userCategories = GetCurrentUser().Categories;
+                IEnumerable<Category> userCategories = CurrentUser.Categories;
                 List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
                 {
                     new CategoryViewModel()
@@ -97,24 +81,24 @@ namespace AspNet_RssReader_WebUI.Controllers
             {
                 Name = addSource.Name,
                 Link = addSource.Link,
-                ApplicationUserId = GetCurrentUser().Id,
+                ApplicationUserId = CurrentUser.Id,
                 CategoryId = addSource.SelectedCategoryId
             };  
 
-            _dbContext.Set<Source>().Add(source);
-            _dbContext.SaveChanges();
+            DbContext.Set<Source>().Add(source);
+            DbContext.SaveChanges();
 
             return RedirectToAction("List", "Article");
         }
 
         public ViewResult EditSource(string sourceName)
         {
-            Source source = GetCurrentUser().Sources.FirstOrDefault(x => x.Name == sourceName);
+            Source source = CurrentUser.Sources.FirstOrDefault(x => x.Name == sourceName);
 
             if (source == null)
                 return View("Error");
 
-            IEnumerable<Category> userCategories = GetCurrentUser().Categories;
+            IEnumerable<Category> userCategories = CurrentUser.Categories;
             List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
             {
                 new CategoryViewModel()
@@ -149,14 +133,14 @@ namespace AspNet_RssReader_WebUI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditSource(EditSourceViewModel editSource)
         {
-            Source source = GetCurrentUser().Sources.FirstOrDefault(x=>x.Id == editSource.SourceId);
+            Source source = CurrentUser.Sources.FirstOrDefault(x=>x.Id == editSource.SourceId);
 
             if (source == null)
                 return View("Error");
 
             if (editSource.Name != source.Name)
             {
-                if (GetCurrentUser().Sources.Any(x => x.Name == editSource.Name))
+                if (CurrentUser.Sources.Any(x => x.Name == editSource.Name))
                 {
                     ModelState.AddModelError("Name", "There is already source with this name");
                 }
@@ -164,7 +148,7 @@ namespace AspNet_RssReader_WebUI.Controllers
 
             if (editSource.Link != source.Link)
             {
-                if (GetCurrentUser().Sources.Any(x => x.Link == editSource.Link))
+                if (CurrentUser.Sources.Any(x => x.Link == editSource.Link))
                 {
                     ModelState.AddModelError("Link", "There is already source with this link");
                 }              
@@ -172,7 +156,7 @@ namespace AspNet_RssReader_WebUI.Controllers
 
             if (!ModelState.IsValid)
             {
-                IEnumerable<Category> userCategories = GetCurrentUser().Categories;
+                IEnumerable<Category> userCategories = CurrentUser.Categories;
                 List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
                 {
                     new CategoryViewModel()
@@ -200,8 +184,8 @@ namespace AspNet_RssReader_WebUI.Controllers
             source.Link = editSource.Link;
             source.CategoryId = editSource.SelectedCategoryId;
 
-            _dbContext.Entry(source).State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            DbContext.Entry(source).State = EntityState.Modified;
+            DbContext.SaveChanges();
 
             return RedirectToAction("List", "Article");
         }
@@ -209,7 +193,7 @@ namespace AspNet_RssReader_WebUI.Controllers
         public ActionResult DeleteSource(string sourceName)
         {
             Source source =
-               GetCurrentUser().Sources
+               CurrentUser.Sources
                     .FirstOrDefault(x => x.Name == sourceName);
                 
 
@@ -228,11 +212,11 @@ namespace AspNet_RssReader_WebUI.Controllers
             if (sure == "Yes")
             {
                 Source source =
-                    GetCurrentUser().Sources
+                    CurrentUser.Sources
                         .FirstOrDefault(x => x.Name == deleteSource.Name);
 
-                _dbContext.Set<Source>().Remove(source);
-                _dbContext.SaveChanges();
+                DbContext.Set<Source>().Remove(source);
+                DbContext.SaveChanges();
             }
 
             return RedirectToAction("List", "Article");

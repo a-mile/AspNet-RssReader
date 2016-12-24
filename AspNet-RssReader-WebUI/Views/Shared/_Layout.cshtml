@@ -7,9 +7,10 @@
     <title>@ViewBag.Title</title>
     <link rel="stylesheet" href="~/Content/sidenav.css" type="text/css" />
     <link rel="stylesheet" href="~/Content/accordion.css" type="text/css" />
-    <link rel="stylesheet" href="~/Content/sourcebar.css" type="text/css" />
+    <link rel="stylesheet" href="~/Content/bar.css" type="text/css" />
     <link rel="stylesheet" href="~/Content/card.css" type="text/css" />
     <link rel="stylesheet" href="~/Content/form.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="~/Scripts/jquery-1.10.2.js"></script>
 </head>
 <body>   
@@ -31,6 +32,11 @@
             this.nextElementSibling.classList.toggle("show");
         }
     }
+
+    $(".rotate")
+        .click(function() {
+            $(this).toggleClass("down");
+        });
 </script>
 
 </body>

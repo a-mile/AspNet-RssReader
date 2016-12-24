@@ -2,17 +2,19 @@
 
 @foreach (var article in Model.ArticleViewModels)
 {
-    <div class="card">
-        <header class="container black">
-            <h4>@article.Title</h4>
-        </header>
+    <div class="card @if(article.Read) {
+        @:read
+         } " onclick="markArticleAsRead('@article.Link','@article.Id',this);">
+        <div class="container black header">
+            @article.Title
+        </div>
 
         <div class="container content">
             <p>@article.Description</p>
         </div>
 
-        <footer class="container black">
-            <h5>@article.SourceName / @article.PublicationTime</h5>
-        </footer>
+        <div class="container black footer">
+            @article.SourceName / @article.PublicationTime
+        </div>
     </div>       
 }

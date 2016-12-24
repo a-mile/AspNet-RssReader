@@ -14,12 +14,13 @@ $(document).ready(function () {
 
 function GetArticles() {
     var sourceName = $('#sourceName').val();
+    var categoryName = $('#categoryName').val();
     var sortOrder = $('#sortOrder').val();
 
     $.ajax({
         type: 'GET',
         url: '/Article/GetArticles',
-        data: { "sourceName": sourceName, "page": pageIndex, "sortOrder": sortOrder },
+        data: { "sourceName": sourceName, "categoryName": categoryName, "page": pageIndex, "sortOrder": sortOrder },
         dataType: 'html',
         success: function (data) {
             if (data != null) {

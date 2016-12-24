@@ -10,39 +10,31 @@ using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticleController : BaseController
     {
-        private readonly DbContext _dbContext;
-        private ApplicationUser _currentUser;
-        private readonly IArticleDownloader _articleDownloader;    
+        private readonly IArticleDownloader _articleDownloader;
         private readonly int _pageSize = 9;
-        private readonly TimeSpan _deleteReadArticlesOlderThan = new TimeSpan(7,0,0,0);
+        private readonly TimeSpan _deleteReadArticlesOlderThan = new TimeSpan(7, 0, 0, 0);
 
-        public ArticleController(DbContext dbContext, IArticleDownloader articleDownloader)
+        public ArticleController(DbContext dbContext, IArticleDownloader articleDownloader) : base(dbContext)
         {
-            _dbContext = dbContext;
-            _articleDownloader = articleDownloader;          
-        }
+            _articleDownloader = articleDownloader;
+        }        
 
-        private ApplicationUser GetCurrentUser()
-        {
-            if (_currentUser == null)
-            {
-                _currentUser = _dbContext.Set<ApplicationUser>().Find(User.Identity.GetUserId());
-            }
-
-            return _currentUser;
-        }
-
-        public ViewResult List(string sourceName = null, string sortOrder = "date_desc")
+        public ViewResult List(string sourceName = null, string categoryName = null, string sortOrder = "date_desc")
         {
             ArticlesListInfoViewModel articlesListInfoViewModel = null;
 
-            if (GetCurrentUser().Sources.Any())
+            if (CurrentUser.Sources.Any())
             {
                 if (sourceName == null)
                 {
-                    var userSources = GetCurrentUser().Sources.ToList();                       
+                    var userSources = CurrentUser.Sources.ToList();
+
+                    if (categoryName != null)
+                    {
+                        userSources = userSources.Where(x => x.CategoryId != null && x.Category.Name == categoryName).ToList();
+                    }                    
                    
                     foreach (var source in userSources)
                     {
@@ -51,7 +43,7 @@ namespace AspNet_RssReader_WebUI.Controllers
                 }
                 else
                 {
-                    Source source = GetCurrentUser().Sources.FirstOrDefault(x => x.Name == sourceName);
+                    Source source = CurrentUser.Sources.FirstOrDefault(x => x.Name == sourceName);
 
                     if (source == null)
                         return View("Error");
@@ -62,6 +54,7 @@ namespace AspNet_RssReader_WebUI.Controllers
                 articlesListInfoViewModel = new ArticlesListInfoViewModel
                 {
                     SourceName = sourceName,
+                    CategoryName = categoryName,
                     SortOrder = sortOrder
                 };
             }
@@ -80,9 +73,9 @@ namespace AspNet_RssReader_WebUI.Controllers
                     foreach (var newArticle in newArticles)
                     {                       
                         newArticle.SourceId = source.Id;
-                        newArticle.ApplicationUserId = GetCurrentUser().Id;
+                        newArticle.ApplicationUserId = CurrentUser.Id;
 
-                        _dbContext.Set<Article>().Add(newArticle);                       
+                        DbContext.Set<Article>().Add(newArticle);                       
                     }                  
                 }
                 else
@@ -92,14 +85,14 @@ namespace AspNet_RssReader_WebUI.Controllers
                     foreach (var newArticle in articlesNewerThanSyncDate)
                     {
                         newArticle.SourceId = source.Id;
-                        newArticle.ApplicationUserId = GetCurrentUser().Id;
+                        newArticle.ApplicationUserId = CurrentUser.Id;
 
-                        _dbContext.Set<Article>().Add(newArticle);
+                        DbContext.Set<Article>().Add(newArticle);
                     }
                 }
 
                 source.SyncDate = DateTime.Now;
-                _dbContext.SaveChanges();
+                DbContext.SaveChanges();
             }
 
             DeleteOldArticles(source);
@@ -107,14 +100,15 @@ namespace AspNet_RssReader_WebUI.Controllers
 
         private void DeleteOldArticles(Source source)
         {
-            var articlesToDelete = source.Articles.Where(x => DateTime.Now - x.PubDate > _deleteReadArticlesOlderThan);
+            var articlesToDelete =
+                source.Articles.Where(x => DateTime.Now - x.PubDate > _deleteReadArticlesOlderThan).ToList();
 
             foreach (var article in articlesToDelete)
             {
-                _dbContext.Entry(article).State = EntityState.Deleted;
+                DbContext.Entry(article).State = EntityState.Deleted;
             }
 
-            _dbContext.SaveChanges();
+            DbContext.SaveChanges();
         }
 
         private string GetPublicationTime(DateTime date)
@@ -142,31 +136,58 @@ namespace AspNet_RssReader_WebUI.Controllers
             return "Just now";
         }
 
-        public ActionResult GetArticles(string sourceName, string sortOrder, int page)
+        public ActionResult GetArticles(string sourceName, string categoryName, string sortOrder, int page)
         {
             var articles = Enumerable.Empty<Article>();
 
             if (sourceName == string.Empty)
                 sourceName = null;
+            if (categoryName == string.Empty)
+                categoryName = null;
 
-            switch (sortOrder)
+            if (categoryName == null)
             {
-                case "date_asc":
-                    articles = GetCurrentUser().Articles
-                        .Where(x => sourceName == null || x.Source.Name == sourceName)
-                        .OrderBy(x => x.Read)
-                        .ThenBy(x => x.PubDate)
-                        .Skip((page - 1)*_pageSize)
-                        .Take(_pageSize);
-                    break;
-                case "date_desc":
-                    articles = GetCurrentUser().Articles
-                        .Where(x => sourceName == null || x.Source.Name == sourceName)
-                        .OrderBy(x => x.Read)
-                        .ThenByDescending(x => x.PubDate)
-                        .Skip((page - 1)*_pageSize)
-                        .Take(_pageSize);
-                    break;
+                switch (sortOrder)
+                {
+                    case "date_asc":
+                        articles = CurrentUser.Articles
+                            .Where(x => sourceName == null || x.Source.Name == sourceName)
+                            .OrderBy(x => x.Read)
+                            .ThenBy(x => x.PubDate)
+                            .Skip((page - 1)*_pageSize)
+                            .Take(_pageSize);
+                        break;
+                    case "date_desc":
+                        articles = CurrentUser.Articles
+                            .Where(x => sourceName == null || x.Source.Name == sourceName)
+                            .OrderBy(x => x.Read)
+                            .ThenByDescending(x => x.PubDate)
+                            .Skip((page - 1)*_pageSize)
+                            .Take(_pageSize);
+                        break;
+                }
+            }
+            else
+            {
+                switch (sortOrder)
+                {
+                    case "date_asc":
+                        articles = CurrentUser.Articles
+                            .Where(x => x.Source.CategoryId != null && x.Source.Category.Name == categoryName)
+                            .OrderBy(x => x.Read)
+                            .ThenBy(x => x.PubDate)
+                            .Skip((page - 1) * _pageSize)
+                            .Take(_pageSize);
+                        break;
+                    case "date_desc":
+                        articles = CurrentUser.Articles
+                            .Where(x => x.Source.CategoryId != null && x.Source.Category.Name == categoryName)
+                            .OrderBy(x => x.Read)
+                            .ThenByDescending(x => x.PubDate)
+                            .Skip((page - 1) * _pageSize)
+                            .Take(_pageSize);
+                        break;
+                }
             }
 
             List<ArticleViewModel> articleViewModels = new List<ArticleViewModel>();
@@ -180,7 +201,7 @@ namespace AspNet_RssReader_WebUI.Controllers
                     Link = article.Link,
                     SourceName = article.Source.Name,
                     PublicationTime = GetPublicationTime(article.PubDate),
-                    Read = article.Read ? "read" : "",
+                    Read = article.Read,
                     ImageUrl = article.ImageUrl,
                     Id = article.Id
                 };
@@ -196,12 +217,16 @@ namespace AspNet_RssReader_WebUI.Controllers
             return PartialView("ArticleSummary", articlesListViewModel);
         }
 
-        public ActionResult MarkAllAsRead(string sourceName = null)
+        public ActionResult MarkAllAsRead(string sourceName = null, string categoryName = null)
         {
-            var userArticles = GetCurrentUser().Articles;
+            var userArticles = CurrentUser.Articles;
 
             if (sourceName == null)
-            {              
+            {
+                if (categoryName != null)
+                {
+                    userArticles = userArticles.Where(x => x.Source.CategoryId != null && x.Source.Category.Name == categoryName).ToList();
+                }
                 MarkArticlesAsRead(userArticles);
             }
             else
@@ -210,7 +235,7 @@ namespace AspNet_RssReader_WebUI.Controllers
                 MarkArticlesAsRead(sourceArticles);
             }
          
-            return RedirectToAction("List", new {sourceName = sourceName});
+            return RedirectToAction("List", new {sourceName = sourceName, categoryName = categoryName});
         }
 
         private void MarkArticlesAsRead(IEnumerable<Article> articles)
@@ -218,21 +243,21 @@ namespace AspNet_RssReader_WebUI.Controllers
             foreach (var article in articles)
             {
                 article.Read = true;
-                _dbContext.Entry(article).State = EntityState.Modified;
+                DbContext.Entry(article).State = EntityState.Modified;
             }
 
-            _dbContext.SaveChanges();
+            DbContext.SaveChanges();
         }
 
         public string MarkArticleAsRead(int articleId)
         {
-            Article article = GetCurrentUser().Articles.FirstOrDefault(x => x.Id == articleId);
+            Article article = CurrentUser.Articles.FirstOrDefault(x => x.Id == articleId);
 
             if (article != null)
             {
                 article.Read = true;
-                _dbContext.Entry(article).State = EntityState.Modified;
-                _dbContext.SaveChanges();
+                DbContext.Entry(article).State = EntityState.Modified;
+                DbContext.SaveChanges();
 
                 return "Succes";
             }

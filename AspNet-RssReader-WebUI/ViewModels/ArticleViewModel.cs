@@ -8,7 +8,7 @@
         public string Link { get; set; }
         public string SourceName { get; set; }
         public string PublicationTime { get; set; }
-        public string Read { get; set; }
+        public bool Read { get; set; }
         public string ImageUrl { get; set; }
     }
 }

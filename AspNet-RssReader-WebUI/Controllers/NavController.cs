@@ -8,21 +8,16 @@ using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
-    public class NavController : Controller
+    public class NavController : BaseController
     {
-        private readonly DbContext _dbContext;
-        public NavController(DbContext dbContext)
-        {
-            _dbContext = dbContext;
-        }
+        public NavController(DbContext dbContext) : base(dbContext){ }
         public PartialViewResult Menu(string sourceName = null)
         {
-            string userId = User.Identity.GetUserId();
             NavMenuViewModel sourcesList = new NavMenuViewModel
             {
-                Sources = _dbContext.Set<Source>().Where(x=>x.ApplicationUserId == userId),
+                Sources = CurrentUser.Sources,
                 CurrentSourceName = sourceName,
-                Categories = _dbContext.Set<Category>().Where(x=>x.ApplicationUserId == userId)
+                Categories = CurrentUser.Categories
             };
             return PartialView(sourcesList);
         }

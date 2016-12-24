@@ -15,21 +15,50 @@ namespace AspNet_RssReader_WebUI
                     controller = "Article",
                     action = "List",
                     sourceName = (string)null,
+                    categoryName = (string)null
                 });
 
-            routes.MapRoute(null, "{SourceName}",
+            routes.MapRoute(null, "Source/{sourceName}",
                 new
                 {
                     controller = "Article",
                     action = "List",
+                    categoryName = (string)null
                 });
-
-  
-            routes.MapRoute(null, "Delete/{sourceName}",
+            routes.MapRoute(null, "Category/{categoryName}",
+                new
+                {
+                    controller = "Article",
+                    action = "List",
+                    sourceName = (string)null
+                });
+            routes.MapRoute(null, "DeleteSource/{sourceName}",
                 new
                 {
                     controller = "Source",
-                    action = "DeleteSource" 
+                    action = "DeleteSource",
+                    categoryName = (string)null
+                });
+            routes.MapRoute(null, "DeleteCategory/{categoryName}",
+                new
+                {
+                    controller = "Category",
+                    action = "DeleteCategory",
+                    sourceName = (string)null
+                });
+            routes.MapRoute(null, "EditSource/{sourceName}",
+                new
+                {
+                    controller = "Source",
+                    action = "EditSource",
+                    categoryName = (string)null
+                });
+            routes.MapRoute(null, "EditCategory/{categoryName}",
+                new
+                {
+                    controller = "Category",
+                    action = "EditCategory",
+                    sourceName = (string)null
                 });
 
             routes.MapRoute(null, "MarkAllAsRead",
@@ -37,14 +66,35 @@ namespace AspNet_RssReader_WebUI
                 {
                     controller = "Article",
                     action = "MarkAllAsRead",
-                    sourceName = (string)null
+                    sourceName = (string)null,
+                    categoryName = (string)null
                 });
 
-            routes.MapRoute(null, "MarkAllAsRead/{sourceName}",
+            routes.MapRoute(null, "MarkAllAsRead/Source/{sourceName}",
                 new
                 {
                     controller = "Article",
-                    action = "MarkAllAsRead"
+                    action = "MarkAllAsRead",
+                    categoryName = (string)null
+                });
+            routes.MapRoute(null, "MarkAllAsRead/Category/{categoryName}",
+                new
+                {
+                    controller = "Article",
+                    action = "MarkAllAsRead",
+                    sourceName = (string)null
+                });
+            routes.MapRoute(null, "AddNewSource",
+                new
+                {
+                    controller = "Source",
+                    action = "AddNewSource"
+                });
+            routes.MapRoute(null, "AddNewCategory",
+                new
+                {
+                    controller = "Category",
+                    action = "AddNewCategory"
                 });
 
             routes.MapRoute(null, "{controller}/{action}");

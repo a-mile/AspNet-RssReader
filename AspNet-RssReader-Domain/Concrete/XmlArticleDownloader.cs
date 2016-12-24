@@ -13,7 +13,7 @@ namespace AspNet_RssReader_Domain.Concrete
 {
     public class XmlArticleDownloader : IArticleDownloader
     {
-        private int _descriptionLength = 160;
+        private int _descriptionLength = 250;
         public IEnumerable<Article> GetArticles(string sourceLink)
         {
             Uri uriResult;

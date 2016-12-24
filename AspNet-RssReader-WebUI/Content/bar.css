@@ -1,0 +1,41 @@
+﻿.barlink-second {
+    font-size: 16px !important;
+    padding: 0 !important;
+    min-width: 150px;
+    max-width: 150px;
+    height: 30px;
+    display: table-cell !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    
+}
+.barbutton-second {  
+    text-align: center;
+    padding: 0 !important;
+    min-width: 27px;
+    max-width: 27px;
+    height: 30px;
+    display: table-cell !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.barlink-first {
+    padding-right: 0 !important;
+    min-width: 130px;
+    max-width: 130px;
+    height: 30px;
+    display: table-cell !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.barbutton-first {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    min-width: 27px;
+    max-width: 27px;
+    height: 30px;
+    text-align: center;
+    display: table-cell !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}

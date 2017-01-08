@@ -1,0 +1,42 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.UpdateSourceViewModel
+
+<h1>Edit Source</h1>
+@using (Ajax.BeginForm("Update", "Source",
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.LabelFor(m => m.Name)
+        <div>
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Link)
+        <div>
+            @Html.TextBoxFor(m => m.Link)
+            @Html.ValidationMessageFor(m => m.Link)
+        </div>
+    </div>
+
+        <div>
+            <!--Html.LabelFor(m => m.SelectedCategoryId)-->
+            <div>
+                <!--Html.DropDownListFor(m => m.SelectedCategoryId, Model.Categories)-->
+            </div>
+        </div>
+
+        @Html.HiddenFor(x => x.Id)
+
+        <div>
+            <input type="submit" value="Update" />
+        </div>
+}

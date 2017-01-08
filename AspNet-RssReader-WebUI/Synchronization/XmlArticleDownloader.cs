@@ -5,13 +5,12 @@ using System.Net;
 using System.Net.Mime;
 using System.Text;
 using System.Xml.Linq;
-using AspNet_RssReader_Domain.Abstract;
 using AspNet_RssReader_Domain.Entities;
 using CSharp_HtmlParser_Library.HtmlDocumentStructure;
 
-namespace AspNet_RssReader_Domain.Concrete
+namespace AspNet_RssReader_WebUI.Synchronization
 {
-    public class XmlArticleDownloader : IArticleDownloader
+    public class XmlArticleDownloader
     {
         private int _descriptionLength = 250;
         public IEnumerable<Article> GetArticles(string sourceLink)

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Data.Entity;
 using System.Web.Mvc;
 using System.Web.Routing;
-using AspNet_RssReader_Domain.Abstract;
 using AspNet_RssReader_Domain.Concrete;
 using Ninject;
+using Ninject.Web.Common;
 
 namespace AspNet_RssReader_WebUI.Infrastructure
 {
@@ -21,10 +20,8 @@ namespace AspNet_RssReader_WebUI.Infrastructure
             return controllerType == null ? null : (IController)_ninjectKernel.Get(controllerType);
         }
         private void AddBindings()
-        {
-            _ninjectKernel.Bind<IArticleDownloader>().To<XmlArticleDownloader>();
-            _ninjectKernel.Bind<DbContext>().To<ApplicationDbContext>();
-
-        }
+        {   
+            _ninjectKernel.Bind<ApplicationDbContext>().ToSelf().InRequestScope();
+        }       
     }
 }

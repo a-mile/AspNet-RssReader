@@ -52,6 +52,14 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FluentValidation, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation.Mvc, Version=6.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.MVC5.6.2.1.0\lib\Net45\FluentValidation.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -91,6 +99,14 @@
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Conventions, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Extensions.Conventions.3.2.0.0\lib\net45-full\Ninject.Extensions.Conventions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.3.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
@@ -165,6 +181,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActionResults\CreateUpdateDeleteResult.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -175,40 +192,48 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\NavController.cs" />
     <Compile Include="Controllers\SourceController.cs" />
+    <Compile Include="FormHandlers\CategoryFormHandler.cs" />
+    <Compile Include="FormHandlers\SourceFormHandler.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\AjaxHelpers.cs" />
+    <Compile Include="Infrastructure\ControllerContextExtensions.cs" />
     <Compile Include="Infrastructure\NinjectControllerFactory.cs" />
+    <Compile Include="Interfaces\IGeneralFormHandler.cs" />
+    <Compile Include="Interfaces\IViewModelBuilder.cs" />
+    <Compile Include="Interfaces\IViewModelFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Validation\RssLinkValidator.cs" />
-    <Compile Include="ViewModels\AddCategoryViewModel.cs" />
-    <Compile Include="ViewModels\AddSourceViewModel.cs" />
+    <Compile Include="Synchronization\ArticleSynchronizer.cs" />
+    <Compile Include="Synchronization\XmlArticleDownloader.cs" />
+    <Compile Include="ViewModelBuilders\ArticleViewModelBuilder.cs" />
+    <Compile Include="ViewModelBuilders\CategoryViewModelBuilder.cs" />
+    <Compile Include="ViewModelBuilders\NavViewModelBuilder.cs" />
+    <Compile Include="ViewModelBuilders\SourceViewModelBuilder.cs" />
+    <Compile Include="ViewModelBuilders\ViewModelFactory.cs" />
+    <Compile Include="ViewModels\ArticlesListInfoModelViewModel.cs" />
+    <Compile Include="ViewModels\CategoryViewModel.cs" />
     <Compile Include="ViewModels\ArticlesListInfoViewModel.cs" />
     <Compile Include="ViewModels\ArticlesListViewModel.cs" />
     <Compile Include="ViewModels\ArticleViewModel.cs" />
-    <Compile Include="ViewModels\CategoryViewModel.cs" />
-    <Compile Include="ViewModels\DeleteCategoryViewModel.cs" />
-    <Compile Include="ViewModels\DeleteSourceViewModel.cs" />
-    <Compile Include="ViewModels\EditCategoryViewModel.cs" />
-    <Compile Include="ViewModels\EditSourceViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
-    <Compile Include="ViewModels\NavMenuViewModel.cs" />
+    <Compile Include="ViewModels\NavViewModel.cs" />
+    <Compile Include="ViewModels\SourceViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\accordion.css" />
-    <Content Include="Content\card.css" />
-    <Content Include="Content\form.css" />
-    <Content Include="Content\bar.css" />
+    <Content Include="Content\site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\sidenav.css" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\articleLoad.js" />
+    <Content Include="Scripts\controllers.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -232,19 +257,19 @@
     <Content Include="Views\Article\List.cshtml" />
     <Content Include="Views\Shared\ArticleSummary.cshtml" />
     <Content Include="Views\Nav\Menu.cshtml" />
-    <Content Include="Views\Source\AddNewSource.cshtml" />
-    <Content Include="Views\Source\DeleteSource.cshtml" />
+    <Content Include="Views\Source\Create.cshtml" />
+    <Content Include="Views\Source\Delete.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Category\AddNewCategory.cshtml" />
-    <Content Include="Views\Source\EditSource.cshtml" />
-    <Content Include="Views\Category\EditCategory.cshtml" />
-    <Content Include="Views\Category\DeleteCategory.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Source\Update.cshtml" />
+    <Content Include="Views\Category\Update.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Shared\UpperBar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -252,6 +277,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CSharp-HtmlParser\CSharp-HtmlParser-Library\CSharp-HtmlParser-Library.csproj">
+      <Project>{874B41EA-18D4-45C3-A08B-67FCD0227740}</Project>
+      <Name>CSharp-HtmlParser-Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AspNet-RssReader-Domain\AspNet-RssReader-Domain.csproj">
       <Project>{c364524b-8a37-4628-8d8b-8fa0057ff4d4}</Project>
       <Name>AspNet-RssReader-Domain</Name>

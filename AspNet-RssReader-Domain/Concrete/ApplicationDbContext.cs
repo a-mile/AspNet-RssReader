@@ -8,6 +8,8 @@ namespace AspNet_RssReader_Domain.Concrete
     {
         public DbSet<Article> Articles { get; set; }
         public DbSet<Source> Sources { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<SavedArticle> SavedArticles { get; set; }
 
         public ApplicationDbContext() : base("EFDbContext")
         {

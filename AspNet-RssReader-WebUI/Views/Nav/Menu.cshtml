@@ -1,97 +1,103 @@
-﻿@model AspNet_RssReader_WebUI.ViewModels.NavMenuViewModel
+﻿@using AspNet_RssReader_WebUI.HtmlHelpers
+@model AspNet_RssReader_WebUI.ViewModels.NavViewModel
 
-<div id="mySidenav" class="sidenav">
-    @using (Html.BeginForm("LogOff", "Account",FormMethod.Post,new {role="form"}))
-    {
-        @Html.AntiForgeryToken()
-        <input type="submit" value="Log off" class="submitLink"/>
-    }<br/>
-    @Html.ActionLink("New source", "AddNewSource", "Source")
-    @Html.ActionLink("New category", "AddNewCategory", "Category")<br/>
-
-    @Html.RouteLink("All sources",
-        new
+<ul class="nav" id="sidenav">
+    <li class="title">Rss Reader</li>
+    <li>@Ajax.ActionLink("New source","Create","Source",null,
+       new AjaxOptions { UpdateTargetId = "modal-content", HttpMethod = "GET", InsertionMode = InsertionMode.Replace, OnComplete = "showModal()" })
+    </li>
+    <li>
+        @Ajax.ActionLink("New category", "Create", "Category", null,
+       new AjaxOptions { UpdateTargetId = "modal-content", HttpMethod = "GET", InsertionMode = InsertionMode.Replace, OnComplete = "showModal()" })
+    </li>
+    <br>
+    <li>
+        <a href="@Url.Action("List","Article")">All sources</a>
+        @if (Model.Sources.Any())
         {
-            controller = "Article",
-            action = "List"
-        }, new
-        {
-            @class = "barlink-first"
-        })
-
-    <a class="barbutton-first"></a>
-    <a class="barbutton-first"></a>
-    @if (Model.Sources.Any())
-    {
-        <a class="barbutton-first accordion rotate"><i class="fa fa-chevron-right" style="font-size: 18px"></i></a>
-    }
-    else
-    {
-        <a class="barbutton-first"></a>
-    }
-    <div class="panel">
-        @foreach (var source in Model.Sources.ToList())
-        {
-            <div>
-                @Html.RouteLink(source.Name,
-                    new
-                    {
-                        controller = "Article",
-                        action = "List",
-                        sourceName = source.Name
-                    }, new
-                    {
-                        @class = "barlink-second"
-                    })
-                <a href="@Url.Action("EditSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-bars"></i></a>
-                <a href="@Url.Action("DeleteSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-close"></i></a>
-            </div>
+            <a class="button accordion arrow right"><i class="fa fa-chevron-right"></i></a>
         }
-    </div>
-
-    @foreach (var category in Model.Categories.ToList())
-    {
-        @Html.RouteLink(category.Name,
-            new
+        <ul class="hidden">
+            @foreach (var source in Model.Sources)
             {
-                controller = "Article",
-                action = "List",
-                categoryName = category.Name
-            }, new
-            {
-                @class = "barlink-first"
-            })
-
-        <a href="@Url.Action("EditCategory", "Category", new {categoryName = category.Name})" class="barbutton-first"><i class="fa fa-bars"></i></a>
-        <a href="@Url.Action("DeleteCategory", "Category", new {categoryName = category.Name})" class="barbutton-first"><i class="fa fa-close"></i></a>
-        if (category.Sources.Any())
-        {
-            <a class="accordion barbutton-first rotate"><i class="fa fa-chevron-right" style="font-size: 18px"></i></a>
-        }
-        else
-        {
-            <a class="barbutton-first"></a>
-        }
-
-        <div class="panel">
-            @foreach (var source in category.Sources)
-            {
-                <div>
-                    @Html.RouteLink(source.Name,
-                        new
-                        {
-                            controller = "Article",
-                            action = "List",
-                            sourceName = source.Name
-                        }, new
-                        {
-                            @class = "barlink-second"
-                        })
-                    <a href="@Url.Action("EditSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-bars"></i></a>
-                    <a href="@Url.Action("DeleteSource", "Source", new {sourceName = source.Name})" class="barbutton-second"><i class="fa fa-close"></i></a>
-                </div>
+                <li class="show-hide-button">
+                    <a href="@Url.Action("List", "Article", new {sourceName = source.Name})" class="source-name">@source.Name</a>
+                    <div class="right">
+                        @Ajax.RawActionLink("<i class=\"fa fa-edit\"></i>", "Update", "Source", new {name = source.Name},
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }, new {@class = "button hide-button"})
+                        @Ajax.RawActionLink("<i class=\"fa fa-times\"></i>", "Delete", "Source", new {name = source.Name},
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }, new {@class = "button hide-button"})
+                      </div>
+                </li>
             }
-        </div>
-    }
-</div>
-
+        </ul>
+    </li>
+    <li>
+        @foreach (var category in Model.Categories)
+        {
+            <div class="category-show-hide-button show-hide-button">
+                <a href="@Url.Action("List","Article",new {categoryName = category.Name})">@category.Name</a>
+                <div class="right">
+                    @Ajax.RawActionLink("<i class=\"fa fa-edit\"></i>", "Update", "Category", new { name = category.Name },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }, new { @class = "button hide-button" })
+                    @Ajax.RawActionLink("<i class=\"fa fa-times\"></i>", "Delete", "Category", new { name = category.Name },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }, new { @class = "button hide-button" })
+                </div>
+            </div>
+            if(category.Sources.Any())
+            {
+                 <a class="button accordion arrow right"><i class="fa fa-chevron-right"></i></a>
+            }
+            <ul class="hidden" style="clear: both">
+                @foreach (var source in category.Sources)
+                {
+                    <li class="show-hide-button">
+                        <a href="@Url.Action("List", "Article", new {sourceName = source.Name})" class="source-name">@source.Name</a>
+                        <div class="right">
+                            @Ajax.RawActionLink("<i class=\"fa fa-edit\"></i>", "Update", "Source", new { name = source.Name },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }, new { @class = "button hide-button" })
+                            @Ajax.RawActionLink("<i class=\"fa fa-times\"></i>", "Delete", "Source", new { name = source.Name },
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "GET",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }, new { @class = "button hide-button" })
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+    </li>
+</ul>

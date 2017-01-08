@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using AspNet_RssReader_Domain.Concrete;
+﻿using AspNet_RssReader_Domain.Concrete;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;

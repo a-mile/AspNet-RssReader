@@ -1,0 +1,17 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.DeleteCategoryViewModel
+
+@{
+    ViewBag.Title = "Delete category";
+}
+
+<h3>Delete category</h3>
+<p>Are you sure do you want to delete @Model.Name ?</p>
+@using (Html.BeginForm("Delete", "Category", FormMethod.Post, new {role = "form"}))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x=>x.Id)
+    <div>
+        <input type="submit" value="Delete"/>
+    </div>
+}
+

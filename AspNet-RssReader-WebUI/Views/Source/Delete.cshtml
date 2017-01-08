@@ -1,0 +1,17 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.DeleteSourceViewModel
+    <h1>Delete source</h1>
+<p>Are you sure do you want to delete @Model.Name ?</p>
+@using (Ajax.BeginForm("Delete", "Source",
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x=>x.Id)
+    <input name="sure" type="submit" value="Delete" />
+}
+

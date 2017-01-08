@@ -1,225 +1,71 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web.Mvc;
-using AspNet_RssReader_Domain.Entities;
+﻿using System.Web.Mvc;
+using AspNet_RssReader_WebUI.ActionResults;
+using AspNet_RssReader_WebUI.FormHandlers;
 using AspNet_RssReader_WebUI.ViewModels;
-using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
     public class SourceController : BaseController
     {
-        public SourceController(DbContext dbContext) : base(dbContext){ }   
-
-        public ViewResult AddNewSource()
-        {
-            IEnumerable<Category> userCategories = CurrentUser.Categories;
-            List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
-            {
-                new CategoryViewModel()
-                {
-                    Name = "None",
-                    Id = null
-                }
-            };
-
-            foreach (var category in userCategories)
-            {
-                CategoryViewModel categoryViewModel = new CategoryViewModel()
-                {
-                    Name = category.Name,
-                    Id = category.Id
-                };
-                userCategoriesViewModel.Add(categoryViewModel);
-            }
-
-            return View(new AddSourceViewModel {CategoriesViewModel =  userCategoriesViewModel});
+        public ActionResult Create()
+        {           
+            return PartialView(ViewModelFactory.GetViewModel<SourceController,CreateSourceViewModel>(this));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddNewSource(AddSourceViewModel addSource)
+        public ActionResult Create(CreateSourceViewModel createSourceViewModel)
         {
-            if (CurrentUser.Sources.Any(x =>x.Name == addSource.Name))
-            {
-                ModelState.AddModelError("Name", "There is already source with this name");
-            }
+            return new CreateUpdateDeleteResult<CreateSourceViewModel>(
+                createSourceViewModel,
+                new CreateSourceFormHandler(),
+                viewModel => JavaScript("location.reload(true)"),
+                viewModel => PartialView(viewModel)
+            );
+        }        
 
-            if (CurrentUser.Sources.Any(x => x.Link == addSource.Link))
-            {
-                ModelState.AddModelError("Link", "There is already source with this link");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                IEnumerable<Category> userCategories = CurrentUser.Categories;
-                List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
-                {
-                    new CategoryViewModel()
-                    {
-                        Name = "None",
-                        Id = null
-                    }
-                };
-
-                foreach (var category in userCategories)
-                {
-                    CategoryViewModel categoryViewModel = new CategoryViewModel()
-                    {
-                        Name = category.Name,
-                        Id = category.Id
-                    };
-                    userCategoriesViewModel.Add(categoryViewModel);
-                }
-                addSource.CategoriesViewModel = userCategoriesViewModel;
-
-                return View(addSource);
-            }
-
-            Source source = new Source
-            {
-                Name = addSource.Name,
-                Link = addSource.Link,
-                ApplicationUserId = CurrentUser.Id,
-                CategoryId = addSource.SelectedCategoryId
-            };  
-
-            DbContext.Set<Source>().Add(source);
-            DbContext.SaveChanges();
-
-            return RedirectToAction("List", "Article");
-        }
-
-        public ViewResult EditSource(string sourceName)
+        public ActionResult Update(string name)
         {
-            Source source = CurrentUser.Sources.FirstOrDefault(x => x.Name == sourceName);
+            var viewModel = ViewModelFactory.GetViewModel<SourceController, UpdateSourceViewModel, string>(this, name);
 
-            if (source == null)
-                return View("Error");
+            if (viewModel == null)
+                return HttpNotFound();
 
-            IEnumerable<Category> userCategories = CurrentUser.Categories;
-            List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
-            {
-                new CategoryViewModel()
-                {
-                    Name = "None",
-                    Id = null
-                }
-            };
-
-            foreach (var category in userCategories)
-            {
-                CategoryViewModel categoryViewModel = new CategoryViewModel()
-                {
-                    Name = category.Name,
-                    Id = category.Id
-                };
-                userCategoriesViewModel.Add(categoryViewModel);
-            }
-
-            EditSourceViewModel editSourceViewModel = new EditSourceViewModel
-            {
-                CategoriesViewModel = userCategoriesViewModel,
-                Link = source.Link,
-                Name = source.Name,
-                SelectedCategoryId = source.CategoryId,
-                SourceId =  source.Id
-            };
-            return View(editSourceViewModel);
+            return PartialView(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditSource(EditSourceViewModel editSource)
+        public ActionResult Update(UpdateSourceViewModel updateSourceViewModel)
         {
-            Source source = CurrentUser.Sources.FirstOrDefault(x=>x.Id == editSource.SourceId);
-
-            if (source == null)
-                return View("Error");
-
-            if (editSource.Name != source.Name)
-            {
-                if (CurrentUser.Sources.Any(x => x.Name == editSource.Name))
-                {
-                    ModelState.AddModelError("Name", "There is already source with this name");
-                }
-            }
-
-            if (editSource.Link != source.Link)
-            {
-                if (CurrentUser.Sources.Any(x => x.Link == editSource.Link))
-                {
-                    ModelState.AddModelError("Link", "There is already source with this link");
-                }              
-            }
-
-            if (!ModelState.IsValid)
-            {
-                IEnumerable<Category> userCategories = CurrentUser.Categories;
-                List<CategoryViewModel> userCategoriesViewModel = new List<CategoryViewModel>
-                {
-                    new CategoryViewModel()
-                    {
-                        Name = "None",
-                        Id = null
-                    }
-                };
-
-                foreach (var category in userCategories)
-                {
-                    CategoryViewModel categoryViewModel = new CategoryViewModel()
-                    {
-                        Name = category.Name,
-                        Id = category.Id
-                    };
-                    userCategoriesViewModel.Add(categoryViewModel);
-                }
-                editSource.CategoriesViewModel = userCategoriesViewModel;
-
-                return View(editSource);
-            }
-
-            source.Name = editSource.Name;
-            source.Link = editSource.Link;
-            source.CategoryId = editSource.SelectedCategoryId;
-
-            DbContext.Entry(source).State = EntityState.Modified;
-            DbContext.SaveChanges();
-
-            return RedirectToAction("List", "Article");
+            return new CreateUpdateDeleteResult<UpdateSourceViewModel>(
+                updateSourceViewModel,
+                new UpdateSourceFormHandler(),
+                viewModel => JavaScript("location.reload(true)"),
+                viewModel => PartialView(viewModel)
+            );
         }
 
-        public ActionResult DeleteSource(string sourceName)
+        public ActionResult Delete(string name)
         {
-            Source source =
-               CurrentUser.Sources
-                    .FirstOrDefault(x => x.Name == sourceName);
-                
+            var viewModel = ViewModelFactory.GetViewModel<SourceController, DeleteSourceViewModel, string>(this, name);
 
-            if (source == null)
-                return View("Error");
+            if (viewModel == null)
+                return HttpNotFound();
 
-            DeleteSourceViewModel deleteSourceViewModel = new DeleteSourceViewModel {Name = sourceName};
-
-            return View(deleteSourceViewModel);
+            return PartialView(viewModel);
         }
 
-        [HttpPost,ActionName("DeleteSource")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteSourceConfirmed(DeleteSourceViewModel deleteSource, string sure)
+        public ActionResult Delete(DeleteSourceViewModel deleteSourceViewModel)
         {
-            if (sure == "Yes")
-            {
-                Source source =
-                    CurrentUser.Sources
-                        .FirstOrDefault(x => x.Name == deleteSource.Name);
-
-                DbContext.Set<Source>().Remove(source);
-                DbContext.SaveChanges();
-            }
-
-            return RedirectToAction("List", "Article");
+            return new CreateUpdateDeleteResult<DeleteSourceViewModel>(
+                deleteSourceViewModel,
+                new DeleteSourceFormHandler(),
+                viewModel => JavaScript("location.reload(true)"),
+                viewModel => PartialView(viewModel)
+            );
         }
     }
 }

@@ -1,6 +1,5 @@
 namespace AspNet_RssReader_Domain.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class Intial : DbMigration

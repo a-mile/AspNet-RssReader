@@ -1,43 +1,92 @@
-﻿@using Microsoft.AspNet.Identity
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="~/Content/sidenav.css" type="text/css" />
-    <link rel="stylesheet" href="~/Content/accordion.css" type="text/css" />
-    <link rel="stylesheet" href="~/Content/bar.css" type="text/css" />
-    <link rel="stylesheet" href="~/Content/card.css" type="text/css" />
-    <link rel="stylesheet" href="~/Content/form.css" type="text/css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="~/Content/site.css" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="~/Scripts/jquery-1.10.2.js"></script>
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.min.js")
 </head>
-<body>   
 
-@{ Html.RenderAction("Menu", "Nav"); }
-    
-<div id="main">
-    @RenderBody()
-</div>
+<body>
+
+    @{
+        Html.RenderAction("Menu", "Nav");
+        Html.RenderPartial("UpperBar");
+    }
+
+    <div id="content">
+        @RenderBody()
+    </div>
+
+    <div id="modal">
+        <div id="modal-content">
+        </div>
+    </div>
 
 <script>
-
     var acc = document.getElementsByClassName("accordion");
     var i;
 
     for (i = 0; i < acc.length; i++) {
         acc[i].onclick = function () {
-            this.classList.toggle("active");
             this.nextElementSibling.classList.toggle("show");
         }
     }
 
-    $(".rotate")
-        .click(function() {
-            $(this).toggleClass("down");
-        });
+    var arrows = document.getElementsByClassName("arrow");
+
+    for (i = 0; i < arrows.length; i++) {
+        arrows[i].onclick = function () {
+            this.classList.toggle("arrow-down");
+        }
+    }
+
+    var accarrows = document.getElementsByClassName("arrow");
+
+    for (i = 0; i < accarrows.length; i++) {
+        accarrows[i].onclick = function () {
+            this.classList.toggle("arrow-down");
+            this.nextElementSibling.classList.toggle("show");
+        }
+    }
+
+    var modal = document.getElementById('modal');
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    function switchNav() {
+        var sidenav = document.getElementById("sidenav");
+        var button = document.getElementById("sidenavButton");
+        if (sidenav.style.width === "300px") {
+            sidenav.style.width = "";
+            button.style.marginLeft = "0";
+        }
+        else {
+            sidenav.style.width = "300px";
+            button.style.marginLeft = "300px";
+        }
+    }
+
+    function accountInfo() {
+        var info = document.getElementsByClassName("account-info")[0];
+        var button = document.getElementsByClassName("account-button")[0];
+        info.classList.toggle("show");
+        button.classList.toggle("account-button-down");
+    }
+
+    function showModal() {
+        modal.style.display = "block";
+    }
 </script>
+    
 
 </body>
 </html>

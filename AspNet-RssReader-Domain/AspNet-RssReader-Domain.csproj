@@ -53,6 +53,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -61,8 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\IArticleDownloader.cs" />
-    <Compile Include="Concrete\XmlArticleDownloader.cs" />
     <Compile Include="Concrete\ApplicationDbContext.cs" />
     <Compile Include="Entities\Article.cs" />
     <Compile Include="Entities\Category.cs" />
@@ -111,6 +110,9 @@
     <EmbeddedResource Include="Migrations\201612170904583_Source sync date.resx">
       <DependentUpon>201612170904583_Source sync date.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

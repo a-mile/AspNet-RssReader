@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet-RssReader-WebUI", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet-RssReader-Domain", "AspNet-RssReader-Domain\AspNet-RssReader-Domain.csproj", "{C364524B-8A37-4628-8D8B-8FA0057FF4D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNet-RssReader-Tests", "AspNet-RssReader-Tests\AspNet-RssReader-Tests.csproj", "{FCA329DD-ECAC-477F-9F9F-8874F4671CC1}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp-HtmlParser-Library", "..\CSharp-HtmlParser\CSharp-HtmlParser-Library\CSharp-HtmlParser-Library.csproj", "{874B41EA-18D4-45C3-A08B-67FCD0227740}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{C364524B-8A37-4628-8D8B-8FA0057FF4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C364524B-8A37-4628-8D8B-8FA0057FF4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C364524B-8A37-4628-8D8B-8FA0057FF4D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FCA329DD-ECAC-477F-9F9F-8874F4671CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCA329DD-ECAC-477F-9F9F-8874F4671CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCA329DD-ECAC-477F-9F9F-8874F4671CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCA329DD-ECAC-477F-9F9F-8874F4671CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{874B41EA-18D4-45C3-A08B-67FCD0227740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{874B41EA-18D4-45C3-A08B-67FCD0227740}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{874B41EA-18D4-45C3-A08B-67FCD0227740}.Release|Any CPU.ActiveCfg = Release|Any CPU

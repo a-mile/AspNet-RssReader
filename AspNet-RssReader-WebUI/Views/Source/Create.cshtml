@@ -1,0 +1,39 @@
+﻿@model AspNet_RssReader_WebUI.ViewModels.CreateSourceViewModel
+
+<h1>Add new source</h1>
+@using (Ajax.BeginForm("Create", "Source",
+                            new AjaxOptions
+                            {
+                                UpdateTargetId = "modal-content",
+                                HttpMethod = "POST",
+                                InsertionMode = InsertionMode.Replace,
+                                OnComplete = "showModal()"
+                            }))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.LabelFor(m => m.Name)
+        <div>
+            @Html.TextBoxFor(m => m.Name)
+            @Html.ValidationMessageFor(m => m.Name)
+        </div>
+    </div>
+
+    <div>
+        @Html.LabelFor(m => m.Link)
+        <div>
+            @Html.TextBoxFor(m => m.Link)
+            @Html.ValidationMessageFor(m => m.Link)
+        </div>
+    </div>
+
+        <div>
+            <div>
+                @Html.DropDownListFor(m => m.CategoryId, Model.CategoriesSelectList)
+            </div>
+        </div>
+
+        <div>
+            <input type="submit" value="Create" />
+        </div>
+}

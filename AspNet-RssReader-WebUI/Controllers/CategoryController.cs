@@ -1,131 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AspNet_RssReader_Domain.Entities;
+﻿using System.Web.Mvc;
+using AspNet_RssReader_WebUI.ActionResults;
+using AspNet_RssReader_WebUI.FormHandlers;
 using AspNet_RssReader_WebUI.ViewModels;
-using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.Controllers
 {
     public class CategoryController : BaseController
-    {
-        public CategoryController(DbContext dbContext) : base(dbContext){ }
-
-        public ActionResult AddNewCategory()
+    {        
+        public ActionResult Create()
         {
-            return View();
+            return PartialView(ViewModelFactory.GetViewModel<CategoryController, CreateCategoryViewModel>(this));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddNewCategory(AddCategoryViewModel addCategory)
+        public ActionResult Create(CreateCategoryViewModel createCategoryViewModel)
         {
-            if (CurrentUser.Categories.Any(x => x.Name == addCategory.Name))
-            {
-                ModelState.AddModelError("Name", "There is already category with this name");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(addCategory);
-            }
-
-            Category category = new Category()
-            {
-                Name = addCategory.Name,
-                ApplicationUserId = CurrentUser.Id
-            };
-
-            DbContext.Set<Category>().Add(category);
-            DbContext.SaveChanges();
-
-            return RedirectToAction("List", "Article");
+            return new CreateUpdateDeleteResult<CreateCategoryViewModel>(
+                createCategoryViewModel,
+                new CreateCategoryFormHandler(),
+                viewModel => JavaScript("location.reload(true)"),
+                viewModel => PartialView(viewModel)
+            );
         }
 
-        public ViewResult EditCategory(string categoryName)
+        public ActionResult Update(string name)
         {
-            Category category = CurrentUser.Categories.FirstOrDefault(x => x.Name == categoryName);
+            var viewModel = ViewModelFactory.GetViewModel<CategoryController, UpdateCategoryViewModel, string>(this,
+                name);
 
-            if (category == null)
-                return View("Error");
+            if (viewModel == null)
+                return HttpNotFound();
 
-            EditCategoryViewModel editCategoryViewModel = new EditCategoryViewModel
-            {
-                Name = category.Name,
-                CategoryId = category.Id
-            };
-
-            return View(editCategoryViewModel);
+            return PartialView(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditCategory(EditCategoryViewModel editCategory)
+        public ActionResult Update(UpdateCategoryViewModel updateCategoryViewModel)
         {
-            Category category = CurrentUser.Categories.FirstOrDefault(x => x.Id == editCategory.CategoryId);
-
-            if (category == null)
-                return View("Error");
-
-            if (editCategory.Name != category.Name)
-            {
-                if (CurrentUser.Categories.Any(x => x.Name == editCategory.Name))
-                {
-                    ModelState.AddModelError("Name", "There is already category with this name");
-                }
-            }            
-
-            if (!ModelState.IsValid)
-            {             
-                return View(editCategory);
-            }
-
-            category.Name = editCategory.Name;
-
-            DbContext.Entry(category).State = EntityState.Modified;
-            DbContext.SaveChanges();
-
-            return RedirectToAction("List", "Article");
+            return new CreateUpdateDeleteResult<UpdateCategoryViewModel>(
+                updateCategoryViewModel,
+                new UpdateCategoryFormHandler(),
+                viewModel => JavaScript("location.reload(true)"),
+                viewModel => PartialView(viewModel)
+            );
         }
 
-        public ActionResult DeleteCategory(string categoryName)
+        public ActionResult Delete(string name)
         {
-            Category category =
-               CurrentUser.Categories
-                    .FirstOrDefault(x => x.Name == categoryName);
+            var viewModel = ViewModelFactory.GetViewModel<CategoryController, DeleteCategoryViewModel, string>(this,
+                name);
 
+            if (viewModel == null)
+                return HttpNotFound();
 
-            if (category == null)
-                return View("Error");
-
-            DeleteCategoryViewModel deleteCategoryViewModel = new DeleteCategoryViewModel { Name = categoryName };
-
-            return View(deleteCategoryViewModel);
+            return PartialView(viewModel);
         }
 
-        [HttpPost, ActionName("DeleteCategory")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteCategoryConfirmed(DeleteCategoryViewModel deleteCategory, string sure)
+        public ActionResult Delete(DeleteCategoryViewModel deleteCategoryViewModel)
         {
-            if (sure == "Yes")
-            {               
-                Category category =
-                    CurrentUser.Categories
-                        .FirstOrDefault(x => x.Name == deleteCategory.Name);
-
-                if (category == null)
-                    return View("Error");
-
-                category = DbContext.Set<Category>().Include("Sources").FirstOrDefault(x => x.Id == category.Id);
-
-                DbContext.Set<Category>().Remove(category);
-                DbContext.SaveChanges();
-            }
-
-            return RedirectToAction("List", "Article");
+            return new CreateUpdateDeleteResult<DeleteCategoryViewModel>(
+                deleteCategoryViewModel,
+                new DeleteCategoryFormHandler(),
+                viewModel => JavaScript("location.reload(true)"),
+                viewModel => PartialView(viewModel)
+            );
         }
     }
 }

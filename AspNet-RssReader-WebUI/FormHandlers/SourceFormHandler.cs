@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using System.Web;
 using System.Web.Mvc;
-using AspNet_RssReader_Domain.Concrete;
 using AspNet_RssReader_Domain.Entities;
-using AspNet_RssReader_WebUI.Infrastructure;
+using AspNet_RssReader_WebUI.Extensions;
 using AspNet_RssReader_WebUI.Interfaces;
 using AspNet_RssReader_WebUI.ViewModels;
 
@@ -12,8 +12,8 @@ namespace AspNet_RssReader_WebUI.FormHandlers
     {
         public void ProcessForm(ControllerContext context, CreateSourceViewModel model)
         {
-            var dbContext = context.GetDbContext<ApplicationDbContext>();
-            var currentUser = context.GetCurrentUser<ApplicationUser>();
+            var dbContext = HttpContext.Current.GetDbContext();
+            var currentUser = HttpContext.Current.GetCurrentUser();;
 
             Source source = new Source()
             {
@@ -32,8 +32,8 @@ namespace AspNet_RssReader_WebUI.FormHandlers
     {
         public void ProcessForm(ControllerContext context, UpdateSourceViewModel model)
         {
-            var dbContext = context.GetDbContext<ApplicationDbContext>();
-            var currentUser = context.GetCurrentUser<ApplicationUser>();
+            var dbContext = HttpContext.Current.GetDbContext();
+            var currentUser = HttpContext.Current.GetCurrentUser();;
             var source = currentUser.Sources.FirstOrDefault(x => x.Id == model.Id);
 
             if (source != null)
@@ -49,8 +49,8 @@ namespace AspNet_RssReader_WebUI.FormHandlers
     {
         public void ProcessForm(ControllerContext context, DeleteSourceViewModel model)
         {
-            var dbContext = context.GetDbContext<ApplicationDbContext>();
-            var currentUser = context.GetCurrentUser<ApplicationUser>();
+            var dbContext = HttpContext.Current.GetDbContext();
+            var currentUser = HttpContext.Current.GetCurrentUser();;
             var source = currentUser.Sources.FirstOrDefault(x => x.Id == model.Id);
 
             if (source != null)

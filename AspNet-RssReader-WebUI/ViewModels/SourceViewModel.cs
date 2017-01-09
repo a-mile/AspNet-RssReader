@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Xml.Linq;
 using AspNet_RssReader_Domain.Concrete;
 using AspNet_RssReader_Domain.Entities;
+using AspNet_RssReader_WebUI.Extensions;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Microsoft.AspNet.Identity;
@@ -25,13 +26,10 @@ namespace AspNet_RssReader_WebUI.ViewModels
         {
             get
             {
-                using (var dbContext = new ApplicationDbContext())
-                {
-                    var currentUserId = HttpContext.Current.User.Identity.GetUserId();
-                    var userCategories = dbContext.Categories.Where(x => x.ApplicationUserId == currentUserId);
+                var currentUser = HttpContext.Current.GetCurrentUser();
+                var userCategories = currentUser.Categories;
 
-                    return userCategories.ToList();
-                }
+                return userCategories;
             }
         }
 
@@ -70,22 +68,16 @@ namespace AspNet_RssReader_WebUI.ViewModels
 
         private bool UniqueName(string name)
         {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var currentUser = HttpContext.Current.GetCurrentUser();
 
-                return !dbContext.Sources.Any(x => (x.Name == name) && (x.ApplicationUserId == currentUserId));
-            }
+            return currentUser.Sources.All(x => x.Name != name);
         }
 
         private bool UniqueLink(string link)
         {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var currentUser = HttpContext.Current.GetCurrentUser();
 
-                return !dbContext.Sources.Any(x => (x.Link == link) && (x.ApplicationUserId == currentUserId));
-            }
+            return currentUser.Sources.All(x => x.Link != link);
         }
 
         private bool Link(string link)

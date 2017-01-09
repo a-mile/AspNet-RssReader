@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web;
 using AspNet_RssReader_Domain.Concrete;
+using AspNet_RssReader_WebUI.Extensions;
 using FluentValidation;
 using FluentValidation.Attributes;
 using Microsoft.AspNet.Identity;
@@ -37,12 +38,9 @@ namespace AspNet_RssReader_WebUI.ViewModels
 
         private bool Unique(string name)
         {
-            using (var dbContext = new ApplicationDbContext())
-            {
-                var currentUserId = HttpContext.Current.User.Identity.GetUserId();
+            var currentUser = HttpContext.Current.GetCurrentUser();
 
-                return !dbContext.Categories.Any(x => (x.Name == name) && (x.ApplicationUserId == currentUserId));
-            }
+            return currentUser.Categories.All(x => x.Name != name);
         }
     }
 }

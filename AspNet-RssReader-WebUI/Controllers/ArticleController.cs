@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AspNet_RssReader_Domain.Entities;
-using AspNet_RssReader_WebUI.Infrastructure;
+using AspNet_RssReader_WebUI.Extensions;
 using AspNet_RssReader_WebUI.Synchronization;
 using AspNet_RssReader_WebUI.ViewModels;
 
@@ -56,7 +56,7 @@ namespace AspNet_RssReader_WebUI.Controllers
 
         public ActionResult MarkAllAsRead(string sourceName = null, string categoryName = null)
         {
-            var currentUser = ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = System.Web.HttpContext.Current.GetCurrentUser();
             var userArticles = currentUser.Articles;
 
             if (sourceName == null)
@@ -89,7 +89,7 @@ namespace AspNet_RssReader_WebUI.Controllers
 
         public string MarkArticleAsRead(int articleId)
         {
-            var currentUser = ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = System.Web.HttpContext.Current.GetCurrentUser();
             Article article = currentUser.Articles.FirstOrDefault(x => x.Id == articleId);
 
             if (article != null)

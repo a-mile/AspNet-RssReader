@@ -1,8 +1,8 @@
 ﻿using System.Linq;
+using System.Web;
 using System.Web.Mvc;
-using AspNet_RssReader_Domain.Concrete;
 using AspNet_RssReader_Domain.Entities;
-using AspNet_RssReader_WebUI.Infrastructure;
+using AspNet_RssReader_WebUI.Extensions;
 using AspNet_RssReader_WebUI.Interfaces;
 using AspNet_RssReader_WebUI.ViewModels;
 
@@ -12,8 +12,9 @@ namespace AspNet_RssReader_WebUI.FormHandlers
     {
         public void ProcessForm(ControllerContext context, CreateCategoryViewModel model)
         {
-            var dbContext = context.GetDbContext<ApplicationDbContext>();
-            var currentUser = context.GetCurrentUser<ApplicationUser>();
+            HttpContext.Current.GetCurrentUser();
+            var dbContext = HttpContext.Current.GetDbContext();
+            var currentUser = HttpContext.Current.GetCurrentUser();
 
             Category category = new Category
             {
@@ -29,8 +30,8 @@ namespace AspNet_RssReader_WebUI.FormHandlers
     {
         public void ProcessForm(ControllerContext context, UpdateCategoryViewModel model)
         {
-            var dbContext = context.GetDbContext<ApplicationDbContext>();
-            var currentUser = context.GetCurrentUser<ApplicationUser>();
+            var dbContext = HttpContext.Current.GetDbContext();
+            var currentUser = HttpContext.Current.GetCurrentUser();
             var category = currentUser.Categories.FirstOrDefault(x => x.Id == model.Id);
 
             if (category != null)
@@ -44,8 +45,8 @@ namespace AspNet_RssReader_WebUI.FormHandlers
     {
         public void ProcessForm(ControllerContext context, DeleteCategoryViewModel model)
         {
-            var dbContext = context.GetDbContext<ApplicationDbContext>();
-            var currentUser = context.GetCurrentUser<ApplicationUser>();
+            var dbContext = HttpContext.Current.GetDbContext();
+            var currentUser = HttpContext.Current.GetCurrentUser();
             var category = currentUser.Categories.FirstOrDefault(x => x.Id == model.Id);
 
             if (category != null)

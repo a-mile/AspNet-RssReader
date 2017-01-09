@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using AspNet_RssReader_Domain.Entities;
 using AspNet_RssReader_WebUI.Controllers;
-using AspNet_RssReader_WebUI.Infrastructure;
+using AspNet_RssReader_WebUI.Extensions;
 using AspNet_RssReader_WebUI.Interfaces;
 using AspNet_RssReader_WebUI.ViewModels;
 
@@ -14,7 +15,7 @@ namespace AspNet_RssReader_WebUI.ViewModelBuilders
         public ArticlesListInfoModelViewModel Build(ArticleController controller, ArticlesListInfoModelViewModel viewModel,
             ArticlesListInfoViewModel input)
         {
-            var currentUser = controller.ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = HttpContext.Current.GetCurrentUser();
 
             if (input.CategoryName != null)
             {
@@ -49,7 +50,7 @@ namespace AspNet_RssReader_WebUI.ViewModelBuilders
             ArticlesListInfoViewModel input)
         {
             var articles = Enumerable.Empty<Article>();
-            var currentUser = controller.ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = HttpContext.Current.GetCurrentUser();
 
             int pageSize = 9; 
 

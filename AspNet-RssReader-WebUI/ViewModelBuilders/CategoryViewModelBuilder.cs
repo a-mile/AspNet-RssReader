@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using AspNet_RssReader_Domain.Entities;
+using System.Web;
 using AspNet_RssReader_WebUI.Controllers;
-using AspNet_RssReader_WebUI.Infrastructure;
+using AspNet_RssReader_WebUI.Extensions;
 using AspNet_RssReader_WebUI.Interfaces;
 using AspNet_RssReader_WebUI.ViewModels;
 
@@ -19,7 +19,7 @@ namespace AspNet_RssReader_WebUI.ViewModelBuilders
     {
         public UpdateCategoryViewModel Build(CategoryController controller, UpdateCategoryViewModel viewModel, string name)
         {
-            var currentUser = controller.ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = HttpContext.Current.GetCurrentUser();
             var category = currentUser.Categories.FirstOrDefault(x => x.Name == name);
 
             if (category == null)
@@ -36,7 +36,7 @@ namespace AspNet_RssReader_WebUI.ViewModelBuilders
     {
         public DeleteCategoryViewModel Build(CategoryController controller, DeleteCategoryViewModel viewModel, string name)
         {
-            var currentUser = controller.ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = HttpContext.Current.GetCurrentUser();
             var category = currentUser.Categories.FirstOrDefault(x => x.Name == name);
 
             if (category == null)

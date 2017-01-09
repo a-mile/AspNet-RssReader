@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using AspNet_RssReader_Domain.Entities;
+using System.Web;
 using AspNet_RssReader_WebUI.Controllers;
-using AspNet_RssReader_WebUI.Infrastructure;
+using AspNet_RssReader_WebUI.Extensions;
 using AspNet_RssReader_WebUI.Interfaces;
 using AspNet_RssReader_WebUI.ViewModels;
 
@@ -19,7 +19,7 @@ namespace AspNet_RssReader_WebUI.ViewModelBuilders
     {
         public UpdateSourceViewModel Build(SourceController controller, UpdateSourceViewModel viewModel,string name)
         {
-            var currentUser = controller.ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = HttpContext.Current.GetCurrentUser();
             var source = currentUser.Sources.FirstOrDefault(x => x.Name == name);
 
             if (source == null)
@@ -38,7 +38,7 @@ namespace AspNet_RssReader_WebUI.ViewModelBuilders
     {
         public DeleteSourceViewModel Build(SourceController controller, DeleteSourceViewModel viewModel,string name)
         {
-            var currentUser = controller.ControllerContext.GetCurrentUser<ApplicationUser>();
+            var currentUser = HttpContext.Current.GetCurrentUser();
             var source = currentUser.Sources.FirstOrDefault(x => x.Name == name);
 
             if (source == null)

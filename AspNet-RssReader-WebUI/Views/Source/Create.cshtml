@@ -1,6 +1,6 @@
 ﻿@model AspNet_RssReader_WebUI.ViewModels.CreateSourceViewModel
 
-<h1>Add new source</h1>
+<h1>Create new source</h1>
 @using (Ajax.BeginForm("Create", "Source",
                             new AjaxOptions
                             {
@@ -27,11 +27,12 @@
         </div>
     </div>
 
+    <div>
+        <label>Category</label>
         <div>
-            <div>
-                @Html.DropDownListFor(m => m.CategoryId, Model.CategoriesSelectList)
-            </div>
+            @Html.DropDownListFor(m => m.CategoryId, Model.CategoriesSelectList,"None")
         </div>
+    </div>
 
         <div>
             <input type="submit" value="Create" />

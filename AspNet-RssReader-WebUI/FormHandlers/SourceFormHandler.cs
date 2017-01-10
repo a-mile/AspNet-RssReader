@@ -20,10 +20,9 @@ namespace AspNet_RssReader_WebUI.FormHandlers
                 Name = model.Name,
                 Link = model.Link,
                 CategoryId = model.CategoryId,
-                ApplicationUserId = currentUser.Id
             };
 
-            dbContext.Sources.Add(source);
+            currentUser.Sources.Add(source);
             dbContext.SaveChanges();
         }
     }
@@ -40,6 +39,7 @@ namespace AspNet_RssReader_WebUI.FormHandlers
             {
                 source.Name = model.Name;
                 source.Link = model.Link;
+                source.CategoryId = model.CategoryId;
                 dbContext.SaveChanges();
             }
         }
@@ -55,7 +55,7 @@ namespace AspNet_RssReader_WebUI.FormHandlers
 
             if (source != null)
             {
-                dbContext.Sources.Remove(source);
+                currentUser.Sources.Remove(source);
                 dbContext.SaveChanges();
             }
         }

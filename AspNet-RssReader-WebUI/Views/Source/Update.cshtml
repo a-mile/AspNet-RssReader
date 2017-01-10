@@ -28,9 +28,9 @@
     </div>
 
         <div>
-            <!--Html.LabelFor(m => m.SelectedCategoryId)-->
+            <label>Category</label>
             <div>
-                <!--Html.DropDownListFor(m => m.SelectedCategoryId, Model.Categories)-->
+                @Html.DropDownListFor(m => m.CategoryId, Model.CategoriesSelectList,"None")
             </div>
         </div>
 

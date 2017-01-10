@@ -7,12 +7,10 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
-using AspNet_RssReader_Domain.Concrete;
 using AspNet_RssReader_Domain.Entities;
 using AspNet_RssReader_WebUI.Extensions;
 using FluentValidation;
 using FluentValidation.Attributes;
-using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.ViewModels
 {    
@@ -66,16 +64,26 @@ namespace AspNet_RssReader_WebUI.ViewModels
                 .Must(UniqueLink).WithMessage("There is already source with this link");
         }
 
-        private bool UniqueName(string name)
+        private bool UniqueName(SourceViewModel model, string name)
         {
             var currentUser = HttpContext.Current.GetCurrentUser();
+
+            if (model is UpdateSourceViewModel)
+            {
+                return !currentUser.Sources.Any(x => (x.Name == name) && (x.Id != (model as UpdateSourceViewModel).Id));
+            }
 
             return currentUser.Sources.All(x => x.Name != name);
         }
 
-        private bool UniqueLink(string link)
+        private bool UniqueLink(SourceViewModel model, string link)
         {
             var currentUser = HttpContext.Current.GetCurrentUser();
+
+            if (model is UpdateSourceViewModel)
+            {
+                return !currentUser.Sources.Any(x => (x.Link == link) && (x.Id != (model as UpdateSourceViewModel).Id));
+            }
 
             return currentUser.Sources.All(x => x.Link != link);
         }

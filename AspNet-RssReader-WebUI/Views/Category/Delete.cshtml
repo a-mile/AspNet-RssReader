@@ -1,12 +1,14 @@
 ﻿@model AspNet_RssReader_WebUI.ViewModels.DeleteCategoryViewModel
-
-@{
-    ViewBag.Title = "Delete category";
-}
-
-<h3>Delete category</h3>
-<p>Are you sure do you want to delete @Model.Name ?</p>
-@using (Html.BeginForm("Delete", "Category", FormMethod.Post, new {role = "form"}))
+<h1>Delete category</h1>
+<label>Are you sure do you want to delete @Model.Name ?</label>
+@using (Ajax.BeginForm("Delete", "Category",
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "modal-content",
+                                            HttpMethod = "POST",
+                                            InsertionMode = InsertionMode.Replace,
+                                            OnComplete = "showModal()"
+                                        }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(x=>x.Id)

@@ -1,11 +1,14 @@
 ﻿@model AspNet_RssReader_WebUI.ViewModels.CreateCategoryViewModel
 
-@{
-    ViewBag.Title = "Create category";
-}
-
-<h3>Create new category</h3>
-@using (Html.BeginForm("Create", "Category", FormMethod.Post, new {role = "form"}))
+<h1>Create new category</h1>
+@using (Ajax.BeginForm("Create", "Category",
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "modal-content",
+                                            HttpMethod = "POST",
+                                            InsertionMode = InsertionMode.Replace,
+                                            OnComplete = "showModal()"
+                                        }))
 {
     @Html.AntiForgeryToken()
     <div>

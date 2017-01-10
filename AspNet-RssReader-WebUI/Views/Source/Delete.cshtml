@@ -1,6 +1,6 @@
 ﻿@model AspNet_RssReader_WebUI.ViewModels.DeleteSourceViewModel
     <h1>Delete source</h1>
-<p>Are you sure do you want to delete @Model.Name ?</p>
+<label>Are you sure do you want to delete @Model.Name ?</label>
 @using (Ajax.BeginForm("Delete", "Source",
                             new AjaxOptions
                             {

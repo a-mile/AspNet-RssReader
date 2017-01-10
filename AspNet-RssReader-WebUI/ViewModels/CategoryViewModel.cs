@@ -1,10 +1,8 @@
 ﻿using System.Linq;
 using System.Web;
-using AspNet_RssReader_Domain.Concrete;
 using AspNet_RssReader_WebUI.Extensions;
 using FluentValidation;
 using FluentValidation.Attributes;
-using Microsoft.AspNet.Identity;
 
 namespace AspNet_RssReader_WebUI.ViewModels
 {   
@@ -33,12 +31,17 @@ namespace AspNet_RssReader_WebUI.ViewModels
         {
             RuleFor(x => x.Name).NotEmpty().WithMessage("Category name cannot be empty")
                                 .Length(0, 15).WithMessage("Maximum length of category name is 15")
-                                .Must(Unique).WithMessage("There is already category with this name");
+                                .Must(UniqueName).WithMessage("There is already category with this name");
         }
 
-        private bool Unique(string name)
+        private bool UniqueName(CategoryViewModel model, string name)
         {
             var currentUser = HttpContext.Current.GetCurrentUser();
+
+            if (model is UpdateCategoryViewModel)
+            {
+                return !currentUser.Sources.Any(x => (x.Name == name) && (x.Id != (model as UpdateCategoryViewModel).Id));
+            }
 
             return currentUser.Categories.All(x => x.Name != name);
         }

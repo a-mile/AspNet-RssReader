@@ -1,12 +1,14 @@
 ﻿@model AspNet_RssReader_WebUI.ViewModels.UpdateCategoryViewModel
+<h1>Edit category</h1>
 
-@{
-    ViewBag.Title = "Update category";
-}
-
-<h3>Edit category</h3>
-
-@using (Html.BeginForm("Update", "Category", FormMethod.Post, new {role = "form"}))
+@using (Ajax.BeginForm("Update", "Category",
+                                        new AjaxOptions
+                                        {
+                                            UpdateTargetId = "modal-content",
+                                            HttpMethod = "POST",
+                                            InsertionMode = InsertionMode.Replace,
+                                            OnComplete = "showModal()"
+                                        }))
 {
     @Html.AntiForgeryToken()
     <div>
